@@ -2,6 +2,11 @@ fcc-nightlife=~/git/fcc-nightlife CD=~/git/fcc-nightlife filter="*.*" {
  app.json
  package.json
  server.js
+ build=build {
+  bundle.js
+  main.css
+  main.css.map
+ }
  git=.git {
   hooks=hooks {
    applypatch-msg.sample
@@ -60,12 +65,7 @@ fcc-nightlife=~/git/fcc-nightlife CD=~/git/fcc-nightlife filter="*.*" {
   }
  }
  public=public {
-  css=css {
-  }
-  fonts=fonts {
-  }
-  img=img {
-  }
+  index.html
  }
  pug=pug {
  }
