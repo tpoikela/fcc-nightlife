@@ -1,0 +1,81 @@
+fcc-nightlife=~/git/fcc-nightlife CD=~/git/fcc-nightlife filter="*.*" {
+ app.json
+ package.json
+ server.js
+ git=.git {
+  hooks=hooks {
+   applypatch-msg.sample
+   commit-msg.sample
+   post-update.sample
+   pre-applypatch.sample
+   pre-commit.sample
+   pre-push.sample
+   pre-rebase.sample
+   prepare-commit-msg.sample
+   update.sample
+  }
+  logs=logs {
+  }
+  objects=objects {
+  }
+  refs=refs {
+  }
+  info=info {
+  }
+  branches=branches {
+  }
+ }
+ app=app {
+  controllers=controllers {
+   userController.client.js
+   userController.server.js
+  }
+  config=config {
+   passport.js
+  }
+  routes=routes {
+   index.js
+  }
+  models=models {
+   users.js
+  }
+  common=common {
+   ajax-functions.js
+   hash_password.js
+   validation.js
+  }
+ }
+ node_modules=node_modules {
+  express-session=express-session {
+  }
+  passport-github=passport-github {
+  }
+  express=express {
+  }
+  passport=passport {
+  }
+  mongoose=mongoose {
+  }
+  dotenv=dotenv {
+  }
+ }
+ public=public {
+  css=css {
+  }
+  fonts=fonts {
+  }
+  img=img {
+  }
+ }
+ pug=pug {
+ }
+ tests=tests {
+  ajax-functions.js
+  ajax.html
+  factory.js
+  userController.serverTest.js
+  usersTest.js
+  validationTest.js
+ }
+}
+
