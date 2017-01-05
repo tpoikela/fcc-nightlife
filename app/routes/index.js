@@ -38,7 +38,6 @@ module.exports = function (app, passport) {
 	}
 
     var userController = new UserController(path);
-	var pollController = new PollController(path, app.url);
 
 	app.route('/')
 		.get(function (req, res) {
@@ -98,45 +97,6 @@ module.exports = function (app, passport) {
     // Routes for getting/creating/deleting/updating polls
     //----------------------------------------------------
 
-    app.route('/polls')
-        .get(function(req, res) {
-            pollController.getPolls(req, res);
-        });
-
-    app.route('/polls/create')
-        .post(isLoggedIn, function(req, res) {
-            pollController.addPoll(req, res);
-        });
-
-    app.route('/polls/vote/:id')
-        .post(function(req, res) {
-            pollController.addVoteOnPoll(req, res);
-        });
-
-    app.route('/polls/update/:id')
-        .post(function(req, res) {
-            pollController.updatePollById(req, res);
-        });
-
-    app.route('/polls/delete/:id')
-        .get(function(req, res) {
-            pollController.deletePollById(req, res);
-        });
-
-    app.route('/polls/getpolls/:id')
-        .get(function(req, res) {
-            pollController.getPollAsJSON(req, res);
-        });
-
-    app.route('/polls/:id')
-        .get(function(req, res) {
-            pollController.getPollById(req, res);
-        });
-
-    app.route('/p/:id')
-        .get(function(req, res) {
-            pollController.getPollByName(req, res);
-        });
     //--------------------------------------
     // User registration and authentication
     //--------------------------------------
@@ -153,14 +113,5 @@ module.exports = function (app, passport) {
 		function(req, res) {
 			res.redirect('/');
 		});
-
-	app.route('/auth/github')
-		.get(passport.authenticate('github'));
-
-	app.route('/auth/github/callback')
-		.get(passport.authenticate('github', {
-			successRedirect: '/',
-			failureRedirect: '/loginFailed'
-		}));
 
 };

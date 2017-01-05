@@ -1,37 +1,50 @@
 'use strict';
 
-var appUrl = window.location.origin;
+var $DEBUG = 1;
 
-var ajaxFunctions = {
+var ajaxFuncs = {
 
-    ready: function ready (fn) {
-        if (typeof fn !== 'function') return;
-        if (document.readyState === 'complete') return fn();
+    get: (url, cb) => {
+        if ($DEBUG) console.log("ajax-get to URL: " + url);
+        var xhr = new XMLHttpRequest();
 
-        document.addEventListener('DOMContentLoaded', fn, false);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4 && xhr.status == 200) {
+                cb(null, xhr.response);
+            }
+        }
+
+        xhr.open("get", url, true);
+        xhr.send();
+
     },
 
-    /** Performs an Ajax request based on method args.*/
-    ajaxRequest: function ajaxRequest (method, url, callback, params) {
-        var xmlhttp = new XMLHttpRequest();
+    post: (url, data, cb) => {
+        if ($DEBUG) console.log("ajax-post to URL: " + url);
+        var xhr = new XMLHttpRequest();
 
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-               callback(null, xmlhttp.response);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4 && xhr.status == 200) {
+                console.log("Resp text:" + xhr.responseText);
+                cb(null, xhr.responseText);
             }
-            else if (xmlhttp.readyState === 4) {
-               callback(xmlhttp.status);
-            }
-        };
-
-        xmlhttp.open(method, url, true);
-
-        if (params) {
-            xmlhttp.setRequestHeader("Content-type", 
-                "application/x-www-form-urlencoded");
-            xmlhttp.send(params);
         }
-        else xmlhttp.send();
-    }
+        xhr.open("post", url, true);
+
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        if (typeof data === "string") {
+            xhr.send(data);
+        }
+        else if (typeof data === "object") {
+            xhr.send(JSON.stringify(data));
+        }
+        else {
+            console.error("ajax-post Wrong data type: " + typeof data);
+        }
+
+    },
+
 };
 
+module.exports = ajaxFuncs;
