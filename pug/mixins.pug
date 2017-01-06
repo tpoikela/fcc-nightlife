@@ -1,0 +1,69 @@
+//- This file contains mixins used in all .pug files. This helps making layouts
+//- more unified across all different pages, and helps in following DRY.
+
+- var bs = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css";
+- var domain = "http://127.0.0.1";
+
+mixin metaProps()
+  meta(property="og:url" content="" + domain)
+  meta(property="og:type" content="website")
+  meta(property="og:title" content="FCC Voting App")
+  meta(property="og:description" content="You can create polls, and vote in other polls!")
+  //- meta(property="og:image" content="http://www.your-domain.com/path/image.jpg" )
+
+mixin styleSheets()
+    link(href="" + bs rel="stylesheet" type="text/css")
+    link(href="/build/main.css" rel="stylesheet" type="text/css")
+
+mixin scripts()
+  script(src="https://fb.me/react-15.2.1.min.js")
+  script(src="https://fb.me/react-dom-15.2.1.min.js")
+
+mixin pageHead()
+  head
+    meta(http-equiv="content-type" content="text/html; charset=utf-8")
+    +metaProps()
+    title Nightlife app
+    +styleSheets()
+    +scripts()
+
+//- Main navigation bar at the top of the page.
+mixin topMenu(title)
+  header
+    ul
+      li
+        a.menu(href="/") Home
+      - if (isAuth) {
+        li
+          a.menu(href="/profile") Profile
+        li
+          a.menu(href="/logout") Logout
+      - }
+      - else {
+        li
+          a.menu(href="/login") Login
+        li
+          a.menu(href="/signup") Signup
+      - }
+      li
+        a.menu(href="/about") About
+
+mixin createButton(isAuth)
+  div.container
+    - if (isAuth) {
+      p
+        a.text-centered(href="/create")
+          button.btn.btn-lg.btn-voting New Poll
+    - } else {
+      p Login to create a new poll or vote in the polls below:
+    - }
+
+mixin appTitle()
+  div.container
+    h1.nightlife-text Nightlife App
+
+mixin appFooter()
+  footer.container
+    p
+      a.author(href="http://www.freecodecamp.com/tpoikela") tpoikela
+

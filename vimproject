@@ -49,6 +49,10 @@ fcc-nightlife=~/git/fcc-nightlife CD=~/git/fcc-nightlife filter="*.*" {
    hash_password.js
    validation.js
   }
+  jsx=jsx {
+   app.jsx
+   navbar.jsx
+  }
  }
  node_modules=node_modules {
   express-session=express-session {

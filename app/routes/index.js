@@ -41,7 +41,8 @@ module.exports = function (app, passport) {
 
 	app.route('/')
 		.get(function (req, res) {
-            res.sendFile(path + "/public/index.html");
+            renderPug(req, res, "index.pug");
+            //res.sendFile(path + "/pug/index.pug");
 		});
 
 	app.route('/about')

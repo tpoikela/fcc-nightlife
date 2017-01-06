@@ -1,0 +1,27 @@
+//- Main page of the app. Rendered HTML is decided by user login status
+
+include mixins.pug
+
+doctype html
+html
+  +pageHead()
+
+  body
+    +topMenu("index")
+    +appTitle()
+
+    div.container
+      div.row
+        div.col-xs-2
+        div.col-xs-8
+          p Search for a club or restaurant near you:
+          form(method="GET" action="/search")
+            input(type="text" name="q")
+            button(type="submit") Search
+          h2 List of places
+          ul#list-of-places.list-group
+        div.col-xs-2
+
+    +appFooter()
+
+  //- script(src="/build/bundle.js" type="text/javascript" charset="utf-8")

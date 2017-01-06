@@ -1,0 +1,43 @@
+//- File which is rendered for logging in as a user
+
+- var failed = typeof loginFailed !== "undefined";
+
+include mixins.pug
+
+doctype html
+html
+  +pageHead()
+
+  body
+    +topMenu("signup")
+    +appTitle()
+
+    div.container
+      div.row
+        div.col-md-3
+
+        div.col-md-6.login
+
+          - if (!failed) {
+            p#pw-login-msg Enter username/password:
+          - } else {
+            p#pw-login-msg.text-danger Login failed. Please retry.
+          - }
+
+          form(method="POST" action="/auth/userlogin")
+
+            div.form-group
+              label.label.label-default(for="userNameInput") Username
+              input#userNameInput.form-control(
+                name="username" type="text" placeholder="Enter username")
+
+            div.form-group
+              label.label.label-default(for="userPasswordInput") Password
+              input#userPasswordField.form-control(
+                name="password" type="password" placeholder="Password")
+
+            button.btn.btn-voting(type="submit") Submit
+
+        div.col-md-3
+
+    +appFooter()

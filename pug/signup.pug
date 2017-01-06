@@ -1,0 +1,43 @@
+//- File which is rendered for signing up a user
+
+include mixins.pug
+
+doctype html
+html
+  +pageHead()
+
+  body
+    +topMenu("signup")
+    +appTitle()
+
+    div.container
+      div.row
+      div.col-md-3
+
+      div.col-md-6
+        p After registration, you can attend a club or restaurant.
+
+        h2 Signup
+
+        form(method="POST" action="/forms/signup")
+
+          div.form-group
+            label.label.label-default(for="usernameField") Username
+            input#usernameField.form-control(
+              name="username" type="text"
+              placeholder="Username" pattern="^[^<>/]+$"
+              title="No <,/ or > in username")
+
+          div.form-group
+            label.label.label-default(for="passwordField") Password
+            input#passwordField.form-control(
+              name="password" type="password"
+              placeholder="Password" required="required"
+              title="Cannot be empty")
+
+          button.btn.btn-voting(type="submit") Signup!
+
+      div.col-md-3
+
+
+    +appFooter()
