@@ -34,6 +34,7 @@ fcc-nightlife=~/git/fcc-nightlife CD=~/git/fcc-nightlife filter="*.*" {
   controllers=controllers {
    userController.client.js
    userController.server.js
+   searchController.server.js
   }
   config=config {
    passport.js
@@ -72,6 +73,16 @@ fcc-nightlife=~/git/fcc-nightlife CD=~/git/fcc-nightlife filter="*.*" {
   index.html
  }
  pug=pug {
+  about.pug
+  create.pug
+  index.pug
+  invalid_poll.pug
+  login.pug
+  mixins.pug
+  poll.pug
+  profile.pug
+  signup.pug
+  signup_done.pug
  }
  tests=tests {
   ajax-functions.js
