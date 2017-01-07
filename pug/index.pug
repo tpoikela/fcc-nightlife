@@ -15,13 +15,11 @@ html
         div.col-xs-2
         div.col-xs-8
           p Search for a club or restaurant near you:
-          form(method="GET" action="/search")
-            input(type="text" name="q")
-            button(type="submit") Search
+          div#main-app
           h2 List of places
           ul#list-of-places.list-group
         div.col-xs-2
 
     +appFooter()
 
-  //- script(src="/build/bundle.js" type="text/javascript" charset="utf-8")
+    script(type="text/javascript" src="/build/bundle.js" charset="utf-8")
