@@ -10,7 +10,7 @@ var ajaxFuncs = {
 
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4 && xhr.status == 200) {
-                cb(null, xhr.response);
+                cb(null, xhr.responseText);
             }
         }
 
