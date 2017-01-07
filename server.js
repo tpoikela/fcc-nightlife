@@ -26,7 +26,6 @@ var routes = require('./app/routes/index.js');
 var app = express();
 app.set("view engine", "pug");
 
-
 require('./app/config/passport')(passport);
 
 app.url = process.env.APP_URL;
