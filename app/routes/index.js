@@ -91,11 +91,17 @@ module.exports = function (app, passport) {
             userController.addLocalUser(req, res);
         });
 
+	app.route('/amiauth')
+		.get((req, res) => {
+            var data = {isAuth: false};
+            if (req.isAuthenticated()) data.isAuth = true;
+            res.json(data);
+		});
 
     //----------------------------------------------------
     // Routes for searching
     //----------------------------------------------------
-    app.route('/search/:id')
+    app.route('/search/:q')
         .get((req, res) => {
             searchController.search(req, res);
         });
