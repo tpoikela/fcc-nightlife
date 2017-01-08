@@ -44,6 +44,7 @@ fcc-nightlife=~/git/fcc-nightlife CD=~/git/fcc-nightlife filter="*.*" {
   }
   models=models {
    users.js
+   venues.js
   }
   common=common {
    ajax-functions.js
@@ -53,6 +54,8 @@ fcc-nightlife=~/git/fcc-nightlife CD=~/git/fcc-nightlife filter="*.*" {
   jsx=jsx {
    app.jsx
    navbar.jsx
+   searchinput.jsx
+
   }
  }
  node_modules=node_modules {
