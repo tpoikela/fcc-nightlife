@@ -22,9 +22,12 @@ var requestYelp = function(setParams, cb) {
 		oauth_version : '1.0'
     };
 
+    /*
     var params = {categoryFilter: categoryFilter, limit: 5};
     for (var key in setParams) params[key] = setParams[key];
     for (var key in reqParams) params[key] = reqParams[key];
+    */
+    var params = Object.assign({}, setParams, reqParams);
 
 	var consumerSecret = process.env.YELP_CONSUMER_SECRET;
 	var tokenSecret = process.env.YELP_TOKEN_SECRET;
