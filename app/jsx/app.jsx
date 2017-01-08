@@ -80,6 +80,7 @@ class NightlifeTop extends React.Component {
             error: '',
             isAuth: false,
         };
+        this.storageKey = 'nightlife-prev-search';
         this.search = this.search.bind(this);
     }
 
@@ -94,6 +95,8 @@ class NightlifeTop extends React.Component {
                 var data = JSON.parse(respText);
                 console.log("ajax-get return data " + respText);
                 this.setState({data: data.businesses});
+                sessionStorage.setItem(this.storageKey,
+                    JSON.stringify(data.businesses));
             }
         });
     }
@@ -114,13 +117,18 @@ class NightlifeTop extends React.Component {
 
     }
 
-    componentDidMount() {
-        this.amIAuthorized();
-        // TODO grab previous search from session storage, if any
+    /** Restores previous search from sessionStorage, if any.*/
+    restoreSessionData() {
+        var dataJSON = sessionStorage.getItem(this.storageKey);
+        if (dataJSON) {
+            var data = JSON.parse(dataJSON);
+            this.setState({data: data});
+        }
     }
 
-    updateBarData(data) {
-        // Store data using session storage
+    componentDidMount() {
+        this.amIAuthorized();
+        this.restoreSessionData();
     }
 
     render() {
@@ -128,7 +136,7 @@ class NightlifeTop extends React.Component {
         var error = this.state.error;
         var isAuth = this.state.isAuth;
         var authMsg = isAuth ? "You're logged in" : "Not logged in";
-        
+
         return (
             <div id='bug-list-id'>
                 <h1>NightlifeTop</h1>
