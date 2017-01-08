@@ -25,13 +25,11 @@ var User = new Schema({
     // Used for local user and password auth
     local: {
         username: String,
-        password: String, // TODO use bcrypt to handle this
+        password: String,
     },
 
-    //going: [{type: ObjectId, ref: 'Club' }]
-
-    // Each poll is referenced by its object ID
-    //polls: [{type: ObjectId, ref: 'Poll' }],
+    favourites: [],
+    going: [{type: ObjectId, ref: 'Venue' }]
 
 },
 {collection: "nightlife_users"} // Selects the collection name explicitly
