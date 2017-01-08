@@ -91,10 +91,14 @@ module.exports = function (app, passport) {
             userController.addLocalUser(req, res);
         });
 
+    // Called by client to check their authentication status
 	app.route('/amiauth')
 		.get((req, res) => {
             var data = {isAuth: false};
-            if (req.isAuthenticated()) data.isAuth = true;
+            if (req.isAuthenticated()) {
+                data.isAuth = true;
+                data.username = req.user.username;
+            }
             res.json(data);
 		});
 
