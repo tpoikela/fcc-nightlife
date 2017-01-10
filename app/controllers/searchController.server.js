@@ -22,11 +22,6 @@ var requestYelp = function(setParams, cb) {
 		oauth_version : '1.0'
     };
 
-    /*
-    var params = {categoryFilter: categoryFilter, limit: 5};
-    for (var key in setParams) params[key] = setParams[key];
-    for (var key in reqParams) params[key] = reqParams[key];
-    */
     var params = Object.assign({}, setParams, reqParams);
 
 	var consumerSecret = process.env.YELP_CONSUMER_SECRET;
@@ -57,24 +52,30 @@ var requestYelp = function(setParams, cb) {
 
 var SearchController = function() {
 
-    var data = [
-        {name: "xxx"},
-        {name: "yyy"},
-        {name: "ccc"},
-    ];
+    var toVenueModelData = (venues) => {
+        var res = [];
+        venues.forEach((item) => {
+            res.push({
+                appID: item.id,
+                name: item.name,
+                url: item.url,
+                image: item.image_url,
+                location: {city: item.location.city},
+                going: [],
+            });
+        });
+        return res;
+    };
 
-    this.search = function(req, res) {
-        console.log("SearchController search was called. Body: " + 
-            JSON.stringify(req.body)
-        );
-        console.log("req.params: " + JSON.stringify(req.params));
-
-		var query = {location: req.params.q};
+    this.search = function(q, cb) {
+		var query = {location: q};
 		requestYelp(query, (err, resp, body) => {
-			if (err) throw new Error(err);
+			if (err) cb(err);
 			//console.log("Got body from Yelp: " + JSON.stringify(body));
             var barData = JSON.parse(body);
-			res.json(barData);
+            var venues = barData.businesses;
+            var venueData = toVenueModelData(venues);
+            cb(null, venueData);
 		});
 
     }

@@ -54,10 +54,11 @@ class BarList extends React.Component {
 
     render() {
         var data = this.props.data;
+        var onGoingClick = this.props.onGoingClick;
 
         // Creates the list item contents
         var listItems = data.map( (item, index) => {
-            return <BarListItem key={index} data={item} />
+            return <BarListItem onGoingClick={onGoingClick} key={index} data={item} />
         });
 
         return (
@@ -98,9 +99,9 @@ class NightlifeTop extends React.Component {
             else {
                 var data = JSON.parse(respText);
                 console.log("ajax-get return data " + respText);
-                this.setState({data: data.businesses});
+                this.setState({data: data});
                 sessionStorage.setItem(this.storageKey,
-                    JSON.stringify(data.businesses));
+                    JSON.stringify(data));
             }
         });
     }
@@ -109,12 +110,13 @@ class NightlifeTop extends React.Component {
     onGoingClick(obj) {
         var url = appUrl + '/going';
         var data = {appID: obj.appID, username: this.state.username};
+        console.log("NightLifeTop sending ajax-post to " + url);
         ajax.post(url, data, (err, respText) => {
             if (err) {
                 this.setState({error: 'An error occurred for /going'});
             }
             else {
-                // OK
+                console.log("onGoingClick post response OK: " + respText);
             }
         });
 
@@ -130,6 +132,7 @@ class NightlifeTop extends React.Component {
             }
             else {
                 var data = JSON.parse(respText);
+                console.log("Got username " + data.username + " from server");
                 this.setState({
                     isAuth: data.isAuth,
                     username: data.username
@@ -149,6 +152,7 @@ class NightlifeTop extends React.Component {
     }
 
     componentDidMount() {
+        console.log("NightlifeTop componentDidMount()");
         this.amIAuthorized();
         this.restoreSessionData();
     }

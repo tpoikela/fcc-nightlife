@@ -4,6 +4,7 @@ var path = process.cwd();
 var ctrlPath = path + '/app/controllers';
 const UserController = require(ctrlPath + '/userController.server.js');
 const SearchController = require(ctrlPath + '/searchController.server.js');
+const VenueController = require(ctrlPath + '/venueController.server.js');
 
 var $DEBUG = 0;
 
@@ -42,6 +43,7 @@ module.exports = function (app, passport) {
     // CONTROLLERS
     var userController = new UserController(path);
     var searchController = new SearchController();
+    var venueController = new VenueController();
 
     //----------------------------------------------------------------------
     // ROUTES
@@ -118,6 +120,10 @@ module.exports = function (app, passport) {
                 username: req.body.username,
                 appID: req.body.appID
             };
+            console.log("User: " + req.user.username + ' obj: ' + obj.username);
+            console.log("appID: " + obj.appID);
+            reqDebug(req);
+
             if (req.user.username === obj.username) {
                 venueController.addGoingUser(obj, (err) => {
                     if (err) res.sendStatus(500);
@@ -135,7 +141,14 @@ module.exports = function (app, passport) {
     //---------------------
     app.route('/search/:q')
         .get((req, res) => {
-            searchController.search(req, res);
+            console.log("SearchController search was called. Body: " + 
+                JSON.stringify(req.body)
+            );
+            console.log("req.params: " + JSON.stringify(req.params));
+            var q = req.params.q;
+            searchController.search(q, (err, data) => {
+                res.json(data);
+            });
         });
 
     //--------------------------------------
