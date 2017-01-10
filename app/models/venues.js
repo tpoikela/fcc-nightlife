@@ -31,11 +31,11 @@ var VenueSchema = new Schema({
     },
 
     url: {
-
+        //TODO
     },
 
     img: {
-
+        //TODO
     },
 
     going: [{type: ObjectId, ref: 'User'}],
@@ -44,16 +44,19 @@ var VenueSchema = new Schema({
 {collection: 'nightlife_venues'}
 );
 
-VenueSchema.statics.addNew = function(obj, cb) {
-
-};
-
 /** Updates the object with a going user.*/
 VenueSchema.methods.addGoing = function(userID, cb) {
     var going = this.going;
-    going.push(userID);
-    var setVals = {$set: {going: going}};
-    this.model('Venue').update({_id: this._id}, setVals, {}, cb);
+    var index = going.indexOf(userID);
+    if (index < 0) {
+        going.push(userID);
+        var setVals = {$set: {going: going}};
+        this.model('Venue').update({_id: this._id}, setVals, {}, cb);
+    }
+    else {
+        var err = new Error("User already going to the venue. Cannot add.");
+        cb(err);
+    }
 };
 
 /** Removes one going user.*/
@@ -61,9 +64,9 @@ VenueSchema.methods.removeGoing = function(userID, cb) {
     var index = this.going.indexOf(userID);
     if (index >= 0) {
         console.log(JSON.stringify(this.going));
-        var sliced = this.going.slice(index);
-        console.log(JSON.stringify(sliced));
-        var setVals = {$set: {going: sliced}};
+        this.going.splice(index, 1);
+        console.log(JSON.stringify(this.going));
+        var setVals = {$set: {going: this.going}};
         this.model('Venue').update({_id: this._id}, setVals, {}, cb);
     }
     else {
