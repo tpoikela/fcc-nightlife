@@ -3,11 +3,12 @@ const chai = require('chai');
 const sinon = require('sinon');
 const expect = chai.expect;
 
-const Venue = require('../app/models/venues.js');
+var Venue = require('../app/models/venues.js');
 
 var mongoose = require('mongoose');
 
-describe('Venue Schema', () => {
+
+describe('Venue Model', () => {
 
     var venueUpdate = null;
 
@@ -20,7 +21,7 @@ describe('Venue Schema', () => {
     });
 
 
-    it('should have an ID', () => {
+    it('should have an ID, app ID and location', () => {
         var venue = new Venue();
         var error = venue.validateSync();
 
@@ -32,7 +33,7 @@ describe('Venue Schema', () => {
     it('can have people going there', (done) => {
         var userID = mongoose.Types.ObjectId();
         var venue = new Venue();
-        venueUpdate.yields(null);
+        venueUpdate.yields(null); // No error in this one
 
         var query = {$set: {going: [userID]}};
 
@@ -40,7 +41,7 @@ describe('Venue Schema', () => {
             expect(err).to.be.null;
             sinon.assert.calledOnce(venueUpdate);
             sinon.assert.calledWith(venueUpdate, {_id: venue._id}, query,
-                {}, cb); // Still failing
+                {}, sinon.match.any); // Still failing
             done();
         };
 
@@ -48,7 +49,7 @@ describe('Venue Schema', () => {
 
     });
 
-    it('can have people removed from the list', function() {
+    it('can have people removed from the going list', (done) => {
         var userID = mongoose.Types.ObjectId();
         var venue = new Venue();
         venue.going.push(userID);
@@ -64,6 +65,5 @@ describe('Venue Schema', () => {
         });
 
     });
-
 
 });

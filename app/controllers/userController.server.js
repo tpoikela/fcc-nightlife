@@ -2,12 +2,12 @@
 // Used for MongoDB access
 var User = require('../models/users.js');
 
-const hash = require("../common/hash_password");
+const hash = require('../common/hash_password');
 
 module.exports = function(path) {
 
     var errorHandler = function(err, res) {
-        console.error("userController Server error: " + err);
+        console.error('userController Server error: ' + err);
         res.sendStatus(500);
     };
 
@@ -17,10 +17,10 @@ module.exports = function(path) {
         var username = req.body.username;
         var password = req.body.password;
         if (username && password) {
-            User.findOne({"username": username}, function(err, user) {
+            User.findOne({'username': username}, function(err, user) {
                 if (err) return errorHandler(err, res);
 
-                // If user doesn't exist, create new one and store into DB
+                // If the user doesn't exist, create new one and store into DB
                 if (!user) {
 					var newUser = new User();
                     newUser.username = username;
@@ -31,6 +31,8 @@ module.exports = function(path) {
                     newUser.save(function(err) {
                         if (err) return errorHandler(err, res);
                         console.log("Register local user " + username + " with pw " + password);
+
+                        res.url = '/auth/userLogin';
                         res.render(path + "/pug/signup_done.pug",
                             {ok: true, name: username});
                     });
@@ -43,13 +45,12 @@ module.exports = function(path) {
             });
         }
         else {
-            //TODO provide more info for the client
             res.sendStatus(400);
         }
     };
 
     var sendAuthenticatedUserInfo = function(res, username) {
-        User.findOne({"username": username})
+        User.findOne({'username': username})
             .populate("polls")
             .exec(function(err, user) {
                 if (err) return errorHandler(err, res);
@@ -73,7 +74,6 @@ module.exports = function(path) {
         else {
             res.json({name: "guest"});
         }
-
     };
 
 };
