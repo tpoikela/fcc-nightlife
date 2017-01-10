@@ -27,6 +27,7 @@ class BarListItem extends React.Component {
     onGoingClick(e) {
         this.setState({going: !this.state.going});
         //TODO call top component handles for ajax-post
+        this.props.onGoingClick({appID: this.props.data.appID});
     }
 
     addToFavourites(e) {
@@ -79,17 +80,20 @@ class NightlifeTop extends React.Component {
             data: [],
             error: '',
             isAuth: false,
+            username: '',
         };
         this.storageKey = 'nightlife-prev-search';
         this.search = this.search.bind(this);
+        this.onGoingClick = this.onGoingClick.bind(this);
     }
 
+    /** Sends a search req to server using ajax-get.*/
     search(q) {
         var url = appUrl + '/search/' + q;
         console.log("Creating ajax-get with URL: " + url);
         ajax.get(url, (err, respText) => {
             if (err) {
-                this.setState({error: 'An error occurred'});
+                this.setState({error: 'An error occurred for search'});
             }
             else {
                 var data = JSON.parse(respText);
@@ -99,6 +103,21 @@ class NightlifeTop extends React.Component {
                     JSON.stringify(data.businesses));
             }
         });
+    }
+
+    /** Sends ajax to the server along with the username.*/
+    onGoingClick(obj) {
+        var url = appUrl + '/going';
+        var data = {appID: obj.appID, username: this.state.username};
+        ajax.post(url, data, (err, respText) => {
+            if (err) {
+                this.setState({error: 'An error occurred for /going'});
+            }
+            else {
+                // OK
+            }
+        });
+
     }
 
     /** Sends ajax-get to server to check if user is authenticated. The returned
@@ -111,7 +130,10 @@ class NightlifeTop extends React.Component {
             }
             else {
                 var data = JSON.parse(respText);
-                this.setState({isAuth: data.isAuth});
+                this.setState({
+                    isAuth: data.isAuth,
+                    username: data.username
+                });
             }
         });
 
@@ -145,7 +167,8 @@ class NightlifeTop extends React.Component {
                 <p>{error}</p>
                 <p>Status: {authMsg}</p>
                 <SearchInput onClick={this.search} />
-                <BarList data={data} />
+                <BarList data={data} onGoingClick={this.onGoingClick}
+                />
                 <hr/>
             </div>
         );
