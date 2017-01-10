@@ -39,8 +39,13 @@ module.exports = function (app, passport) {
 		}
 	}
 
+    // CONTROLLERS
     var userController = new UserController(path);
     var searchController = new SearchController();
+
+    //----------------------------------------------------------------------
+    // ROUTES
+    //----------------------------------------------------------------------
 
 	app.route('/')
 		.get((req, res) => {
@@ -102,9 +107,32 @@ module.exports = function (app, passport) {
             res.json(data);
 		});
 
-    //----------------------------------------------------
+    //----------------------------------
+    // Routes for manipulating user data
+    //----------------------------------
+
+    /** Marks user as going or not going for an event. */
+    app.route('/going')
+        .post(isLoggedIn, (req, res) => {
+            var obj = {
+                username: req.body.username,
+                appID: req.body.appID
+            };
+            if (req.user.username === obj.username) {
+                venueController.addGoingUser(obj, (err) => {
+                    if (err) res.sendStatus(500);
+                    else res.sendStatus(200);
+                });
+            }
+            else {
+                res.sendStatus(401); // Mismatch between usernames
+            }
+        });
+
+
+    //---------------------
     // Routes for searching
-    //----------------------------------------------------
+    //---------------------
     app.route('/search/:q')
         .get((req, res) => {
             searchController.search(req, res);
