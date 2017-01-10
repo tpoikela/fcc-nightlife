@@ -10,7 +10,7 @@ var validator = new Validation();
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
 /** A schema for an user in the database.*/
-var User = new Schema({
+var UserSchema = new Schema({
 
     // Used to access the information in database
     username: {
@@ -35,5 +35,53 @@ var User = new Schema({
 {collection: "nightlife_users"} // Selects the collection name explicitly
 );
 
-module.exports = mongoose.model('User', User);
+/** Returns user ID corresponding to the given user.*/
+UserSchema.statics.getUserID = function(username, cb) {
+    this.model('User').findOne({username: username}, (err, data) => {
+        if (err) cb(err);
+        if (data) cb(null, data._id);
+
+        var error = new Error("No user with given ID found.");
+        cb(error);
+
+    });
+
+};
+
+/** Adds one venue for the user.*/
+UserSchema.methods.addVenue = function(venueID, cb) {
+    var going = this.going;
+    going.push(venueID);
+    var obj = {going: going};
+    this.updateInfo(obj, cb);
+};
+
+/** Removes one venue from the user.*/
+UserSchema.methods.removeVenue = function(venueID, cb) {
+    var going = this.going;
+    var index = going.indexOf(venueID);
+    if (index >= 0) {
+        going.splice(index, 1);
+        var obj = {going: going};
+        this.updateInfo(obj, cb);
+    }
+    else {
+        var err = new Error("User not going to this venue");
+        cb(err);
+    }
+
+};
+
+/** Updates the user info with given object. Note that obj must match the user
+ * schema.*/
+UserSchema.methods.updateInfo = function(obj, cb) {
+    var setVals = {$set: obj};
+    this.model('User').update({_id: this._id}, setVals, {}, (err) => {
+        if (err) cb(err);
+        cb(null);
+    });
+
+};
+
+module.exports = mongoose.model('User', UserSchema);
 
