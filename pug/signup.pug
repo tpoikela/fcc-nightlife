@@ -4,7 +4,7 @@ include mixins.pug
 
 doctype html
 html
-  +pageHead()
+  +pageHead("Nightlife signup")
 
   body
     +topMenu("signup")
@@ -35,7 +35,7 @@ html
               placeholder="Password" required="required"
               title="Cannot be empty")
 
-          button.btn.btn-voting(type="submit") Signup!
+          button#signup-btn.btn.btn-voting(type="submit") Signup!
 
       div.col-md-3
 

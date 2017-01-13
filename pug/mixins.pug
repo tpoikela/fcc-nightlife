@@ -19,11 +19,11 @@ mixin scripts()
   script(src="https://fb.me/react-15.2.1.min.js")
   script(src="https://fb.me/react-dom-15.2.1.min.js")
 
-mixin pageHead()
+mixin pageHead(pageTitle)
   head
     meta(http-equiv="content-type" content="text/html; charset=utf-8")
     +metaProps()
-    title Nightlife app
+    title= pageTitle
     +styleSheets()
     +scripts()
 

@@ -6,10 +6,10 @@ include mixins.pug
 
 doctype html
 html
-  +pageHead()
+  +pageHead("Nightlife login")
 
   body
-    +topMenu("signup")
+    +topMenu("login")
     +appTitle()
 
     div.container
@@ -36,7 +36,7 @@ html
               input#userPasswordField.form-control(
                 name="password" type="password" placeholder="Password")
 
-            button.btn.btn-voting(type="submit") Submit
+            button#login-btn.btn.btn-voting(type="submit") Submit
 
         div.col-md-3
 
