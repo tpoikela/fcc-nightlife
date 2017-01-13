@@ -52,6 +52,7 @@ var requestYelp = function(setParams, cb) {
 
 var SearchController = function() {
 
+    /** Converts data received from Yelp to applications's internal data object.*/
     var toVenueModelData = (venues) => {
         var res = [];
         venues.forEach((item) => {
@@ -67,15 +68,22 @@ var SearchController = function() {
         return res;
     };
 
+    /** Performs the search from Yelp.*/
     this.search = function(q, cb) {
 		var query = {location: q};
 		requestYelp(query, (err, resp, body) => {
 			if (err) cb(err);
-			//console.log("Got body from Yelp: " + JSON.stringify(body));
-            var barData = JSON.parse(body);
-            var venues = barData.businesses;
-            var venueData = toVenueModelData(venues);
-            cb(null, venueData);
+
+            try { // Try this because JSON parse can fail
+                var barData = JSON.parse(body);
+                var venues = barData.businesses;
+                var venueData = toVenueModelData(venues);
+                cb(null, venueData);
+            }
+            catch (e) {
+                cb(e);
+            }
+
 		});
 
     }
