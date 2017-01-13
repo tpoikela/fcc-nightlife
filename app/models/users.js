@@ -39,7 +39,7 @@ var UserSchema = new Schema({
 UserSchema.statics.getUserID = function(username, cb) {
     this.model('User').findOne({username: username}, (err, data) => {
         if (err) cb(err);
-        if (data) cb(null, data._id);
+        if (data) return cb(null, data._id);
 
         var error = new Error("No user with given ID found.");
         cb(error);
