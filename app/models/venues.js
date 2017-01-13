@@ -18,13 +18,13 @@ var VenueSchema = new Schema({
     },
 
     name: {
-        required: true,
+        //required: true,
         type: String
     },
 
     location: {
         type: Object,
-        required: true,
+        //required: true,
         city: {
             type: String,
         },
