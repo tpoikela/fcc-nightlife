@@ -20,8 +20,14 @@ var VenueController = function() {
                         else venue.removeGoing(userID, cb);
                     }
                     else {
-                        var error = new Error("No venue found.");
-                        cb(error);
+                        var newVenue = new Venue();
+                        newVenue.appID = appID;
+                        newVenue.going.push(userID);
+                        newVenue.save((err) => {
+                            if (err) cb(err);
+                            console.log("Saved new venue ID " + appID);
+                            cb(null);
+                        });
                     }
 
                 });
