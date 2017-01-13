@@ -38,7 +38,7 @@ class BarListItem extends React.Component {
         var data = this.props.data;
         var goingButtonText = this.state.going ? "I'm going" : "Not going";
         return (
-            <li>
+            <li className='bar-list-item'>
                 <button onClick={this.onGoingClick}>{goingButtonText}</button>
                 <button onClick={this.addToFavourites}>Add to favourites</button>
                 Data item: {data.name}
@@ -169,7 +169,7 @@ class NightlifeTop extends React.Component {
                 <hr/>
                 <p>This is a nightlife app for doing stuff.</p>
                 <p>{error}</p>
-                <p>Status: {authMsg}</p>
+                <p id="status-bar">Status: {authMsg}</p>
                 <SearchInput onClick={this.search} />
                 <BarList data={data} onGoingClick={this.onGoingClick}
                 />
