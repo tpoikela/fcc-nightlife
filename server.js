@@ -19,6 +19,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var session = require('express-session');
 var bodyParser = require('body-parser');
+var morgan = require('morgan');
 
 // Sources for this app
 var routes = require('./app/routes/index.js');
@@ -54,6 +55,8 @@ app.use(passport.session());
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+app.use(morgan('combined'));
 
 routes(app, passport);
 
