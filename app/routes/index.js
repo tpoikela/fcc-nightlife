@@ -125,7 +125,7 @@ module.exports = function (app, passport) {
             reqDebug(req);
 
             if (req.user.username === obj.username) {
-                venueController.addGoingUser(obj, (err) => {
+                venueController.addGoing(obj, (err) => {
                     if (err) res.sendStatus(500);
                     else res.sendStatus(200);
                 });
@@ -144,10 +144,18 @@ module.exports = function (app, passport) {
             console.log("SearchController search was called. Body: " + 
                 JSON.stringify(req.body)
             );
-            console.log("req.params: " + JSON.stringify(req.params));
+            console.log("get /search/:q req.params: " + JSON.stringify(req.params));
             var q = req.params.q;
             searchController.search(q, (err, data) => {
-                res.json(data);
+                if (err) {
+                    res.sendStatus(500);
+                }
+                else if (data) {
+                    res.json(data);
+                }
+                else {
+                    res.sendStatus(500);
+                }
             });
         });
 
