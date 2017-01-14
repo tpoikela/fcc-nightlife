@@ -68,19 +68,47 @@ var SearchController = function() {
         return res;
     };
 
+    var getAppIDList = (venueData) => {
+        var res = [];
+        venueData.forEach( (item) => {
+            res.push({appID: item.appID});
+        });
+    };
+
+    /** Updates going[] for newly retrieved search items using existin db data.*/
+    var updateGoingVars = (dbData, venueData) => {
+        dbData.forEach( (item) => {
+            venueData.forEach( (vData) => {
+                if (vData.appID === item.appID) {
+                    console.log("Updated going[] for appID " + vData.appID);
+                    vData.going = item.going;
+                }
+            });
+        });
+    };
+
     /** Performs the search from Yelp.*/
     this.search = function(q, cb) {
 		var query = {location: q};
 		requestYelp(query, (err, resp, body) => {
-			if (err) cb(err);
+			if (err) return cb(err);
 
             try { // Try this because JSON parse can fail
                 var barData = JSON.parse(body);
                 var venues = barData.businesses;
                 var venueData = toVenueModelData(venues);
-                cb(null, venueData);
+                var query = {$or: getAppIDList(venueData)};
+
+                console.log("BEFORE Venue.find in search()");
+                Venue.find(query, (err, data) => {
+                    console.log("Venue.find search completed");
+                    if (err) return cb(err);
+                    updateGoingVars(data, venueData);
+                    cb(null, venueData);
+                });
             }
             catch (e) {
+                console.log("An expection was caught in search()");
                 cb(e);
             }
 

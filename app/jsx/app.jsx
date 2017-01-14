@@ -37,11 +37,12 @@ class BarListItem extends React.Component {
     render() {
         var data = this.props.data;
         var goingButtonText = this.state.going ? "I'm going" : "Not going";
+        var nGoing = data.going.length;
         return (
             <li className='bar-list-item'>
                 <button onClick={this.onGoingClick}>{goingButtonText}</button>
                 <button onClick={this.addToFavourites}>Add to favourites</button>
-                Data item: {data.name}
+                Data item: {data.name} - {nGoing} going
             </li>
         );
     }
