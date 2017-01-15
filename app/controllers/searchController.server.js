@@ -4,6 +4,7 @@ var n = require('nonce')();
 var request = require('request');
 var qs = require('querystring');
 
+var Venue = require('../models/venues');
 var yelpUrl = 'http://api.yelp.com/v2/search';
 
 /** Original taken from https://arian.io/how-to-use-yelps-api-with-node/.*/
@@ -73,10 +74,12 @@ var SearchController = function() {
         venueData.forEach( (item) => {
             res.push({appID: item.appID});
         });
+        return res;
     };
 
     /** Updates going[] for newly retrieved search items using existin db data.*/
     var updateGoingVars = (dbData, venueData) => {
+        console.log("Updating goingVars: db :" + JSON.stringify(dbData));
         dbData.forEach( (item) => {
             venueData.forEach( (vData) => {
                 if (vData.appID === item.appID) {
@@ -102,13 +105,16 @@ var SearchController = function() {
                 console.log("BEFORE Venue.find in search()");
                 Venue.find(query, (err, data) => {
                     console.log("Venue.find search completed");
-                    if (err) return cb(err);
+                    if (err) {
+                        console.log("Venue.find() error: " + err);
+                        return cb(err);
+                    }
                     updateGoingVars(data, venueData);
                     cb(null, venueData);
                 });
             }
             catch (e) {
-                console.log("An expection was caught in search()");
+                console.log("An exception was caught in search(): " + e);
                 cb(e);
             }
 
