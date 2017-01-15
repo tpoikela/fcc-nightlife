@@ -149,8 +149,8 @@ var doVenueSearch = function() {
             browser.findElement(By.css('button')).click().then( () => {
                 console.log("Clicked the search button.");
                 browser.wait(until.elementLocated(By.className('bar-list-item')), 1000).then( () => {
-                    browser.findElement(By.className('bar-list-item')).then( (values) => {
-                        //assert.ok(values.length > 5, "Got more than 5 search results OK.");
+                    browser.findElements(By.className('bar-list-item')).then( (values) => {
+                        assert.ok(values.length > 0, "Got more than 1 search results OK.");
                         resolve();
                     });
                 });
@@ -162,9 +162,8 @@ var doVenueSearch = function() {
     return promise;
 };
 
-//describe('Functional test for login and search', () => {
-    //it('description', (done) => {
 
+// Actual test execution here
 signupNewUser(username, password)
     .then(loginRegisteredUser)
     .then(doVenueSearch)
@@ -173,6 +172,4 @@ signupNewUser(username, password)
         browser.quit();
     });
 
-    //});
-//});
 
