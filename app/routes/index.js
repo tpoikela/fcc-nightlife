@@ -118,14 +118,15 @@ module.exports = function (app, passport) {
         .post(isLoggedIn, (req, res) => {
             var obj = {
                 username: req.body.username,
-                appID: req.body.appID
+                appID: req.body.appID,
+                going: req.body.going,
             };
             console.log("User: " + req.user.username + ' obj: ' + obj.username);
             console.log("appID: " + obj.appID);
             reqDebug(req);
 
             if (req.user.username === obj.username) {
-                venueController.addGoing(obj, (err) => {
+                venueController.handleGoingReq(obj, (err) => {
                     if (err) res.sendStatus(500);
                     else res.sendStatus(200);
                 });

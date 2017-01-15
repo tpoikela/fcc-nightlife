@@ -1,5 +1,4 @@
 
-
 var Venue = require('../models/venues');
 var User = require('../models/users');
 
@@ -39,6 +38,12 @@ var VenueController = function() {
         });
 
     };
+
+    /** Calls either add or removeGoing based on obj.going value.*/
+    this.handleGoingReq = function(obj, cb) {
+        if (obj.going) this.addGoing(obj, cb);
+        else this.removeGoing(obj, cb);
+    }
 
     /** Adds one user going to the venue.*/
     this.addGoing = function(obj, cb) {
