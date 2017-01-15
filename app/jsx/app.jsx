@@ -8,71 +8,12 @@ var ajax = require('../common/ajax-functions.js');
 var Navbar = require('./navbar.jsx');
 
 var SearchInput = require('./searchinput.jsx');
+var VenueList = require('./venuelist.jsx');
 
 
-class BarListItem extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-        this.onGoingClick = this.onGoingClick.bind(this);
-        this.addToFavourites = this.addToFavourites.bind(this);
-
-        this.state = {
-            going: false,
-        };
-
-    }
-
-    onGoingClick(e) {
-        this.setState({going: !this.state.going});
-        //TODO call top component handles for ajax-post
-        this.props.onGoingClick({appID: this.props.data.appID});
-    }
-
-    addToFavourites(e) {
-        //TODO call top component handles for ajax-post
-    }
-
-    render() {
-        var data = this.props.data;
-        var goingButtonText = this.state.going ? "I'm going" : "Not going";
-        var nGoing = data.going.length;
-        return (
-            <li className='bar-list-item'>
-                <button onClick={this.onGoingClick}>{goingButtonText}</button>
-                <button onClick={this.addToFavourites}>Add to favourites</button>
-                Data item: {data.name} - {nGoing} going
-            </li>
-        );
-    }
-
-}
-
-/** This component generates the list of bars/restaurants based on the number of
- * items in the array given with props. */
-class BarList extends React.Component {
-
-    render() {
-        var data = this.props.data;
-        var onGoingClick = this.props.onGoingClick;
-
-        // Creates the list item contents
-        var listItems = data.map( (item, index) => {
-            return <BarListItem onGoingClick={onGoingClick} key={index} data={item} />
-        });
-
-        return (
-            <div>
-                <h2>List of places</h2>
-                <ul>
-                    {listItems}
-                </ul>
-            </div>
-        );
-    }
-}
-
+/** Top-level component for the app. Contains logic for ajax-calls and render()
+ * for instantiating all child components.
+ */
 class NightlifeTop extends React.Component {
 
     constructor(props) {
@@ -92,14 +33,14 @@ class NightlifeTop extends React.Component {
     /** Sends a search req to server using ajax-get.*/
     search(q) {
         var url = appUrl + '/search/' + q;
-        console.log("Creating ajax-get with URL: " + url);
+        if ($DEBUG) console.log("Creating ajax-get with URL: " + url);
         ajax.get(url, (err, respText) => {
             if (err) {
                 this.setState({error: 'An error occurred for search'});
             }
             else {
                 var data = JSON.parse(respText);
-                console.log("ajax-get return data " + respText);
+                if ($DEBUG) console.log("ajax-get return data " + respText);
                 this.setState({data: data});
                 sessionStorage.setItem(this.storageKey,
                     JSON.stringify(data));
@@ -110,14 +51,15 @@ class NightlifeTop extends React.Component {
     /** Sends ajax to the server along with the username.*/
     onGoingClick(obj) {
         var url = appUrl + '/going';
-        var data = {appID: obj.appID, username: this.state.username};
-        console.log("NightLifeTop sending ajax-post to " + url);
+        var data = {appID: obj.appID, username: this.state.username,
+            going: obj.going};
+        if ($DEBUG) console.log("NightLifeTop sending ajax-post to " + url);
         ajax.post(url, data, (err, respText) => {
             if (err) {
                 this.setState({error: 'An error occurred for /going'});
             }
             else {
-                console.log("onGoingClick post response OK: " + respText);
+                if ($DEBUG) console.log("onGoingClick post response OK: " + respText);
             }
         });
 
@@ -133,7 +75,7 @@ class NightlifeTop extends React.Component {
             }
             else {
                 var data = JSON.parse(respText);
-                console.log("Got username " + data.username + " from server");
+                if ($DEBUG) console.log("Got username " + data.username + " from server");
                 this.setState({
                     isAuth: data.isAuth,
                     username: data.username
@@ -153,7 +95,7 @@ class NightlifeTop extends React.Component {
     }
 
     componentDidMount() {
-        console.log("NightlifeTop componentDidMount()");
+        if ($DEBUG) console.log("NightlifeTop componentDidMount()");
         this.amIAuthorized();
         this.restoreSessionData();
     }
@@ -172,7 +114,7 @@ class NightlifeTop extends React.Component {
                 <p>{error}</p>
                 <p id="status-bar">Status: {authMsg}</p>
                 <SearchInput onClick={this.search} />
-                <BarList data={data} onGoingClick={this.onGoingClick}
+                <VenueList data={data} onGoingClick={this.onGoingClick}
                 />
                 <hr/>
             </div>
