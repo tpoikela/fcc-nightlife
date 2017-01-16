@@ -148,8 +148,8 @@ var doVenueSearch = function() {
 
             browser.findElement(By.css('button')).click().then( () => {
                 console.log("Clicked the search button.");
-                browser.wait(until.elementLocated(By.className('bar-list-item')), 1000).then( () => {
-                    browser.findElements(By.className('bar-list-item')).then( (values) => {
+                browser.wait(until.elementLocated(By.className('venue-list-item')), 1000).then( () => {
+                    browser.findElements(By.className('venue-list-item')).then( (values) => {
                         assert.ok(values.length > 0, "Got more than 1 search results OK.");
                         resolve();
                     });
