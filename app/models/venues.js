@@ -30,6 +30,8 @@ var VenueSchema = new Schema({
         },
     },
 
+    descr: {},
+
     url: {
         //TODO
     },
