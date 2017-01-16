@@ -7,7 +7,7 @@
 mixin metaProps()
   meta(property="og:url" content="" + domain)
   meta(property="og:type" content="website")
-  meta(property="og:title" content="FCC Voting App")
+  meta(property="og:title" content="FCC Nightlife App")
   meta(property="og:description" content="You can create polls, and vote in other polls!")
   //- meta(property="og:image" content="http://www.your-domain.com/path/image.jpg" )
 
@@ -19,6 +19,7 @@ mixin scripts()
   script(src="https://fb.me/react-15.2.1.min.js")
   script(src="https://fb.me/react-dom-15.2.1.min.js")
 
+//- Generates the page head (css + js) with a customisable title
 mixin pageHead(pageTitle)
   head
     meta(http-equiv="content-type" content="text/html; charset=utf-8")
@@ -47,16 +48,6 @@ mixin topMenu(title)
       - }
       li
         a.menu(href="/about") About
-
-mixin createButton(isAuth)
-  div.container
-    - if (isAuth) {
-      p
-        a.text-centered(href="/create")
-          button.btn.btn-lg.btn-voting New Poll
-    - } else {
-      p Login to create a new poll or vote in the polls below:
-    - }
 
 mixin appTitle()
   div.container
