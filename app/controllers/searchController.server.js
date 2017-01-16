@@ -63,6 +63,7 @@ var SearchController = function() {
                 url: item.url,
                 image: item.image_url,
                 location: {city: item.location.city},
+                descr: item.snippet_text,
                 going: [],
             });
         });
@@ -94,10 +95,14 @@ var SearchController = function() {
     this.search = function(q, cb) {
 		var query = {location: q};
 		requestYelp(query, (err, resp, body) => {
-			if (err) return cb(err);
+            if (err) {
+                console.error("requestYelp failed with error: " + err);
+                return cb(err);
+            }
 
             try { // Try this because JSON parse can fail
                 var barData = JSON.parse(body);
+                console.log("barData at the server: " + body);
                 var venues = barData.businesses;
                 var venueData = toVenueModelData(venues);
                 var query = {$or: getAppIDList(venueData)};
