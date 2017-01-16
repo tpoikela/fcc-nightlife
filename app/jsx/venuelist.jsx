@@ -33,13 +33,29 @@ class VenueListItem extends React.Component {
         var nGoing = data.going.length;
         var url = data.url;
         var image = data.image;
-        return (
-            <li className='bar-list-item'>
-                <img src={image}/>
+        var descr = data.descr;
+        var descrComp = null;
+        if (descr) {
+            descrComp = <p className="venue-descr">{descr}</p>;
+        }
+
+        // Generate buttons only for authenticated users
+        var isAuth = this.props.isAuth;
+        var buttons = null;
+        if (isAuth) {
+            buttons = (
                 <button onClick={this.onGoingClick}>{goingButtonText}</button>
                 <button onClick={this.addToFavourites}>Add to favourites</button>
+            );
+        }
+
+        return (
+            <li className='venue-list-item'>
+                <img src={image}/>
+                {buttons}
                 <a href={url}>{data.name}</a>
-                <span className='li-going'>{nGoing} going</span>
+                <span className='li-going'> | {nGoing} going</span>
+                {descrComp}
             </li>
         );
     }
@@ -53,10 +69,13 @@ class VenueList extends React.Component {
     render() {
         var data = this.props.data;
         var onGoingClick = this.props.onGoingClick;
+        var isAuth = this.props.isAuth;
 
         // Creates the list item contents
         var listItems = data.map( (item, index) => {
-            return <VenueListItem onGoingClick={onGoingClick} key={index} data={item} />
+            return <VenueListItem 
+                onGoingClick={onGoingClick} isAuth={isAuth}
+                key={index} data={item} />
         });
 
         return (

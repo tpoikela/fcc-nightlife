@@ -114,7 +114,7 @@ class NightlifeTop extends React.Component {
                 <p>{error}</p>
                 <p id="status-bar">Status: {authMsg}</p>
                 <SearchInput onClick={this.search} />
-                <VenueList data={data} onGoingClick={this.onGoingClick}
+                <VenueList isAuth={isAuth} data={data} onGoingClick={this.onGoingClick}
                 />
                 <hr/>
             </div>
