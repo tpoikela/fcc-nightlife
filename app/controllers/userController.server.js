@@ -51,7 +51,7 @@ module.exports = function(path) {
 
     var sendAuthenticatedUserInfo = function(res, username) {
         User.findOne({'username': username})
-            .populate("polls")
+            .populate("venues")
             .exec(function(err, user) {
                 if (err) return errorHandler(err, res);
 
@@ -74,6 +74,17 @@ module.exports = function(path) {
         else {
             res.json({name: "guest"});
         }
+    };
+
+    this.getUserID = function(username, cb) {
+        User.findOne({'username': username}, (err, user) => {
+            if (err) return cb(err);
+            else {
+                if (user) cb(null, user._id);
+                else cb(null, null);
+            }
+        });
+
     };
 
 };
