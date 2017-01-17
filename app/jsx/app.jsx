@@ -24,6 +24,7 @@ class NightlifeTop extends React.Component {
             error: '',
             isAuth: false,
             username: '',
+            userID: '',
         };
         this.storageKey = 'nightlife-prev-search';
         this.search = this.search.bind(this);
@@ -48,11 +49,68 @@ class NightlifeTop extends React.Component {
         });
     }
 
-    /** Sends ajax to the server along with the username.*/
+    /** Updates venue going user data. Called after the user click Going
+     * button.*/
+    updateVenueData(obj) {
+        var data = this.state.data;
+        var vData = data.find( item => {
+            return item.appID === obj.appID;
+        });
+
+        if (obj.going) {
+            console.log("Adding user " + obj.userID + " to venue " + obj.appID);
+            vData.going.push(this.state.userID);
+        }
+        else {
+            var index = vData.going.indexOf(obj.userID);
+            if (index >= 0) {
+                console.log("Removing user " + obj.userID + " from venue " + obj.appID);
+                vData.going.splice(index, 1);
+            }
+            else {
+                console.error("No user ID " + obj.userID + " found for venue data.");
+            }
+        }
+        this.setState({data: data});
+    }
+
+    /** Calls server to update the going vars for all shown venue data.*/
+    updateGoingVars() {
+        var url = appUrl + '/getgoing';
+        var appIDs = this.state.data.map( item => {
+            return {appID: item.appID};
+        });
+        if (appIDs.length === 0) return;
+
+        var postData = {appIDs: appIDs};
+        ajax.post(url, postData, (err, respText) => {
+            if (err) {
+                this.setState({error: 'Cannot get data from the server.'});
+            }
+            else {
+                if ($DEBUG) console.log("updateGoingVars post response OK: " + respText);
+                var gotData = JSON.parse(respText);
+                var venueData = this.state.data;
+
+                // Use ES6 destructuring
+                gotData.forEach( ({appID, going}) => {
+                    venueData.forEach( obj => {
+                        if (appID === obj.appID) {
+                            obj.going = going;
+                        }
+                    });
+
+                });
+                this.setState({data: venueData});
+            }
+        });
+    }
+
     onGoingClick(obj) {
         var url = appUrl + '/going';
         var data = {appID: obj.appID, username: this.state.username,
-            going: obj.going};
+            going: obj.going, userID: this.state.userID};
+        console.log("onGoingClick(): data " + JSON.stringify(data));
         if ($DEBUG) console.log("NightLifeTop sending ajax-post to " + url);
         ajax.post(url, data, (err, respText) => {
             if (err) {
@@ -60,6 +118,8 @@ class NightlifeTop extends React.Component {
             }
             else {
                 if ($DEBUG) console.log("onGoingClick post response OK: " + respText);
+                this.updateVenueData(data);
+                this.updateGoingVars();
             }
         });
 
@@ -75,10 +135,11 @@ class NightlifeTop extends React.Component {
             }
             else {
                 var data = JSON.parse(respText);
-                if ($DEBUG) console.log("Got username " + data.username + " from server");
+                if ($DEBUG) console.log("amIAuthorized() respText: " + respText);
                 this.setState({
                     isAuth: data.isAuth,
-                    username: data.username
+                    username: data.username,
+                    userID: data.userID
                 });
             }
         });
@@ -98,6 +159,7 @@ class NightlifeTop extends React.Component {
         if ($DEBUG) console.log("NightlifeTop componentDidMount()");
         this.amIAuthorized();
         this.restoreSessionData();
+        this.updateGoingVars();
     }
 
     render() {
