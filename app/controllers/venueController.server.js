@@ -55,6 +55,21 @@ var VenueController = function() {
         addOrRemoveUser({add: false}, obj, cb);
     }
 
+    /** Given a list of appID objects, returns going lists for those IDs.*/
+    this.getGoingUsers = function(appIDs, cb) {
+        if (typeof appIDs === "object") {
+            var query = {$or: appIDs};
+            Venue.find(query, (err, data) => {
+                if (err) cb(err);
+                else cb(null, data);
+            });
+        }
+        else {
+            var error = new Error("An array object must be supplied.");
+            cb(error);
+        }
+    }
+
 };
 
 module.exports = VenueController;
