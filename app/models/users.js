@@ -29,7 +29,7 @@ var UserSchema = new Schema({
     },
 
     favourites: [],
-    going: [{type: ObjectId, ref: 'Venue' }]
+    venues: [{type: ObjectId, ref: 'Venue' }]
 
 },
 {collection: "nightlife_users"} // Selects the collection name explicitly
