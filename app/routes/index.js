@@ -105,8 +105,17 @@ module.exports = function (app, passport) {
             if (req.isAuthenticated()) {
                 data.isAuth = true;
                 data.username = req.user.username;
+                userController.getUserID(data.username, (err, userID) => {
+                    if (err) res.json({error: "Failed to authenticate"});
+                    else {
+                        data.userID = userID;
+                        res.json(data);
+                    }
+                });
             }
-            res.json(data);
+            else {
+                res.json(data);
+            }
 		});
 
     //----------------------------------
@@ -136,6 +145,23 @@ module.exports = function (app, passport) {
             }
         });
 
+    /** Returns data about going users for requested venues.*/
+    app.route('/getgoing')
+        .post((req, res) => {
+            var appIDs = req.body.appIDs;
+            if (appIDs && appIDs.length) {
+                venueController.getGoingUsers(appIDs, (err, venues) => {
+                    if (err) res.sendStatus(500);
+                    else {
+                        res.json(venues);
+                    }
+
+                });
+            }
+            else {
+                res.sendStatus(400);
+            }
+        });
 
     //---------------------
     // Routes for searching
