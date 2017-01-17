@@ -18,9 +18,10 @@ class VenueListItem extends React.Component {
     }
 
     onGoingClick(e) {
-        this.setState({going: !this.state.going});
-        var obj = {going: this.state.going, appID: this.props.data.appID};
+        var newGoingState = !this.state.going;
+        var obj = {going: newGoingState, appID: this.props.data.appID};
         this.props.onGoingClick(obj);
+        this.setState({going: newGoingState});
     }
 
     addToFavourites(e) {
@@ -44,8 +45,10 @@ class VenueListItem extends React.Component {
         var buttons = null;
         if (isAuth) {
             buttons = (
+                <div id='venue-list-item-btn'>
                 <button onClick={this.onGoingClick}>{goingButtonText}</button>
                 <button onClick={this.addToFavourites}>Add to favourites</button>
+                </div>
             );
         }
 
