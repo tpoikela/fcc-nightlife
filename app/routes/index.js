@@ -40,6 +40,10 @@ module.exports = function (app, passport) {
 		}
 	}
 
+    var logError = function(route, err) {
+        console.error("[ERROR@SERVER] route " + route + ' | ' + err);
+    };
+
     // CONTROLLERS
     var userController = new UserController(path);
     var searchController = new SearchController();
@@ -106,7 +110,10 @@ module.exports = function (app, passport) {
                 data.isAuth = true;
                 data.username = req.user.username;
                 userController.getUserID(data.username, (err, userID) => {
-                    if (err) res.json({error: "Failed to authenticate"});
+                    if (err) {
+                        logError('/amiauth', err);
+                        res.json({error: "Failed to authenticate"});
+                    }
                     else {
                         data.userID = userID;
                         res.json(data);
@@ -136,7 +143,10 @@ module.exports = function (app, passport) {
 
             if (req.user.username === obj.username) {
                 venueController.handleGoingReq(obj, (err) => {
-                    if (err) res.sendStatus(500);
+                    if (err) {
+                        logError('/going', err);
+                        res.sendStatus(500);
+                    }
                     else res.sendStatus(200);
                 });
             }
@@ -151,11 +161,13 @@ module.exports = function (app, passport) {
             var appIDs = req.body.appIDs;
             if (appIDs && appIDs.length) {
                 venueController.getGoingUsers(appIDs, (err, venues) => {
-                    if (err) res.sendStatus(500);
+                    if (err) {
+                        logError('/getgoing', err);
+                        res.sendStatus(500);
+                    }
                     else {
                         res.json(venues);
                     }
-
                 });
             }
             else {
@@ -175,6 +187,7 @@ module.exports = function (app, passport) {
             var q = req.params.q;
             searchController.search(q, (err, data) => {
                 if (err) {
+                    logError('/search/:q', err);
                     res.sendStatus(500);
                 }
                 else if (data) {

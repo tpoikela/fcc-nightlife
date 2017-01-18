@@ -7,21 +7,14 @@ class VenueListItem extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.onGoingClick = this.onGoingClick.bind(this);
         this.addToFavourites = this.addToFavourites.bind(this);
-
-        this.state = {
-            going: false,
-        };
-
     }
 
     onGoingClick(e) {
-        var newGoingState = !this.state.going;
+        var newGoingState = !this.props.going;
         var obj = {going: newGoingState, appID: this.props.data.appID};
         this.props.onGoingClick(obj);
-        this.setState({going: newGoingState});
     }
 
     addToFavourites(e) {
@@ -30,7 +23,7 @@ class VenueListItem extends React.Component {
 
     render() {
         var data = this.props.data;
-        var goingButtonText = this.state.going ? "I'm going" : "Not going";
+        var goingButtonText = !this.props.going ? "Go" : "Cancel";
         var nGoing = data.going.length;
         var url = data.url;
         var image = data.image;
@@ -52,12 +45,18 @@ class VenueListItem extends React.Component {
             );
         }
 
+        var userGoing = "You are not going.";
+        if (this.props.going) {
+            if (nGoing > 1) userGoing = "You're also going!";
+            else userGoing = "You're going!";
+        }
+
         return (
             <li className='venue-list-item'>
                 <img src={image}/>
                 {buttons}
                 <a href={url}>{data.name}</a>
-                <span className='li-going'> | {nGoing} going</span>
+                <span className='li-going'> | {nGoing} going | {userGoing}</span>
                 {descrComp}
             </li>
         );
@@ -73,12 +72,21 @@ class VenueList extends React.Component {
         var data = this.props.data;
         var onGoingClick = this.props.onGoingClick;
         var isAuth = this.props.isAuth;
+        var userID = this.props.userID;
 
         // Creates the list item contents
         var listItems = data.map( (item, index) => {
-            return <VenueListItem 
+            var going = false;
+
+            if (userID) {
+                var userIndex = item.going.indexOf(userID);
+                going = (userIndex >= 0);
+            }
+
+            return (<VenueListItem
                 onGoingClick={onGoingClick} isAuth={isAuth}
-                key={index} data={item} />
+                key={index} data={item} going={going}/>
+            );
         });
 
         return (
