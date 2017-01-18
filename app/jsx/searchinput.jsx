@@ -5,7 +5,7 @@ class SearchInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            q: '',
+            q: '', // Required for <input>
         };
 
         // Mandatory binding for event handlers
@@ -23,7 +23,7 @@ class SearchInput extends React.Component {
     }
 
     render() {
-        var className = this.props.className;
+        var className = this.props.className || 'search-input-div';
         return (
             <div className={className}>
                 <input
