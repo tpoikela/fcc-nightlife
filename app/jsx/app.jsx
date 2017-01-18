@@ -35,19 +35,24 @@ class NightlifeTop extends React.Component {
 
     /** Sends a search req to server using ajax-get.*/
     search(q) {
-        var url = appUrl + '/search/' + q;
-        _debug("Creating ajax-get with URL: " + url);
-        ajax.get(url, (err, respText) => {
-            if (err) {
-                this.setState({error: 'An error occurred for search'});
-            }
-            else {
-                var data = JSON.parse(respText);
-                sessionStorage.setItem(this.storageKey,
-                    JSON.stringify({q: q}));
-                this.setState({data: data});
-            }
-        });
+        if (q) {
+            var url = appUrl + '/search/' + q;
+            _debug("Creating ajax-get with URL: " + url);
+            ajax.get(url, (err, respText) => {
+                if (err) {
+                    this.setState({error: 'An error occurred during search'});
+                }
+                else {
+                    var data = JSON.parse(respText);
+                    sessionStorage.setItem(this.storageKey,
+                        JSON.stringify({q: q}));
+                    this.setState({data: data});
+                }
+            });
+        }
+        else {
+            this.setState({error: "No search input given."});
+        }
     }
 
     /** Updates venue going user data. Called after the user click Going
@@ -183,16 +188,17 @@ class NightlifeTop extends React.Component {
         var error = this.state.error;
         var isAuth = this.state.isAuth;
         var userID = this.state.userID;
-        var authMsg = isAuth ? "You're logged in" : "Not logged in";
+        var authMsg = isAuth ? "You're logged in as " + this.state.username
+            : "Not logged in";
 
         return (
-            <div id='bug-list-id'>
+            <div id='nightlife-app-main-div'>
                 <h1>NightlifeTop</h1>
                 <hr/>
                 <p>This is a nightlife app for doing stuff.</p>
-                <p>{error}</p>
                 <p id="status-bar">Status: {authMsg}</p>
                 <SearchInput onClick={this.search} />
+                <p id='error-msg'>{error}</p>
                 <VenueList
                     isAuth={isAuth}
                     data={data}
