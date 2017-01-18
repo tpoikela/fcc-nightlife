@@ -69,6 +69,7 @@ class VenueListItem extends React.Component {
 class VenueList extends React.Component {
 
     render() {
+        var className = this.props.className || 'venue-list-div';
         var data = this.props.data;
         var onGoingClick = this.props.onGoingClick;
         var isAuth = this.props.isAuth;
@@ -90,7 +91,7 @@ class VenueList extends React.Component {
         });
 
         return (
-            <div>
+            <div className={className}>
                 <h2>List of places</h2>
                 <ul>
                     {listItems}
