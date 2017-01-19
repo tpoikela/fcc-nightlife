@@ -12,19 +12,11 @@ html
 
     div.container
       div.row
-        div.col-md-3
-        div.user-profile.col-md-6
-
-          p
-            span Username:
-            span#profile-username.profile-value
-
-          p Polls created:
-          //- Populated from user poll info
-          ul#profile-poll-list
-        div.col-md-3
+        div.col-xs-2
+        div.col-xs-8
+          div#profile-app
+        div.col-xs-2
 
     +appFooter()
 
-    script(type="text/javascript" src="common/ajax-functions.js")
-    script(type="text/javascript" src="controllers/userController.client.js")
+    script(type="text/javascript" src="/build/bundle.js" charset="utf-8")
