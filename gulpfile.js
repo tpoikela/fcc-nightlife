@@ -5,10 +5,10 @@ var babelify = require('babelify');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 
-var jsx = "./app/jsx";
+var jsxDir = "./app/jsx";
 
 gulp.task('build', function () {
-    return browserify({entries: jsx + '/app.jsx', extensions: ['.jsx'], debug: true})
+    return browserify({entries: jsxDir + '/app.jsx', extensions: ['.jsx'], debug: true})
         .transform(babelify)
         .bundle()
         .pipe(source('./bundle.js'))
@@ -16,7 +16,8 @@ gulp.task('build', function () {
 });
 
 gulp.task('watch', ['build'], function () {
-    gulp.watch(jsx + '/*.jsx', ['build']);
+    //gulp.watch(jsxDir + '/*.jsx', ['build']);
+    gulp.watch('./app/**/*.*', ['build']);
 });
 
 gulp.task('default', ['watch']);
