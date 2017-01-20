@@ -17,6 +17,7 @@ class UserController {
         var url = this.appUrl + '/amiauth';
         ajax.get(url, (err, respText) => {
             if (err) {
+                console.error("userCtrl ERROR: " + err + ' for URL ' + url);
                 cb(err);
             }
             else {
