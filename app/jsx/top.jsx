@@ -14,6 +14,8 @@ var Navbar = require('./navbar.jsx');
 var SearchInput = require('./searchinput.jsx');
 var VenueList = require('./venuelist.jsx');
 
+var UserController = require('../controllers/userController.client');
+
 /** Top-level component for the app. Contains logic for ajax-calls and render()
  * for instantiating all child components.
  */
@@ -28,6 +30,10 @@ class NightlifeTop extends React.Component {
             username: null,
             userID: null,
         };
+
+        this.userCtrl = new UserController(appUrl);
+        this.userCtrl.testFunc("XXX");
+
         this.storageKey = 'nightlife-prev-search';
         this.search = this.search.bind(this);
         this.onGoingClick = this.onGoingClick.bind(this);
@@ -143,14 +149,11 @@ class NightlifeTop extends React.Component {
     /** Sends ajax-get to server to check if user is authenticated. The returned
      * result is only used for GUI element hiding. */
     amIAuthorized() {
-        var url = appUrl + '/amiauth';
-        ajax.get(url, (err, respText) => {
+        this.userCtrl.amIAuthorized( (err, data) => {
             if (err) {
                 this.setState({isAuth: false});
             }
             else {
-                var data = JSON.parse(respText);
-                _debug("amIAuthorized() respText: " + respText);
                 this.setState({
                     isAuth: data.isAuth,
                     username: data.username,
@@ -158,7 +161,6 @@ class NightlifeTop extends React.Component {
                 });
             }
         });
-
     }
 
     /** Restores previous search from sessionStorage, if any.*/

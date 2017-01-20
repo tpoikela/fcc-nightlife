@@ -12,7 +12,7 @@ var _log = function(msg) {
     console.log("\t" + msg);
 };
 
-/** Function for debug logging request.*/
+/** Function for debug logging requests.*/
 var reqDebug = function(req) {
 	_log("Headers: " + JSON.stringify(req.headers));
 	_log("Body: "    + JSON.stringify(req.body));

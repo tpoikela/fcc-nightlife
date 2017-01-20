@@ -1,76 +1,37 @@
 'use strict';
 
-(function () {
+var ajax = require('../common/ajax-functions');
 
-   var $DEBUG = 0;
+class UserController {
 
-   var pollUrl = appUrl + '/polls';
+    constructor(appUrl) {
+        this.appUrl = appUrl;
+    }
 
-   var profileId = document.querySelector('#profile-id') || null;
-   var profileUsername = document.querySelector('#profile-username') || null;
-   var profileRepos = document.querySelector('#profile-repos') || null;
-   var welcomeMsg = document.querySelector('#welcome-msg');
-   var apiUrl = appUrl + '/api/:id';
+    testFunc(msg) {
+        console.log("Test function works: " + msg);
+    }
 
-   var profilePollList = document.querySelector('#profile-poll-list') || null;
-   var style = "class='list-group-item'";
+    /** Sends ajax-get to server to check if user is authenticated. */
+    amIAuthorized(cb) {
+        var url = this.appUrl + '/amiauth';
+        ajax.get(url, (err, respText) => {
+            if (err) {
+                cb(err);
+            }
+            else {
+                var data = JSON.parse(respText);
+                console.log("userCtrl amIAuthorized() respText: " + respText);
+                cb(null, data);
+            }
+        });
+    }
 
-   /** Updates HTML element with given data and property.*/
-   function updateHtmlElement (data, element, userProperty) {
-       if (data.hasOwnProperty(userProperty)) {
-           element.innerHTML = data[userProperty];
-       }
-       else {
-           console.log("Property " + userProperty + " not in data.");
-       }
-   }
+    /** Requests user profile data from the server.*/
+    getUserProfileData(username, cb) {
 
-   /** Sets the welcome msg based on login information.*/
-   function setWelcomeMsg(userObject) {
-      if (userObject.displayName) {
-          welcomeMsg.innerHTML = "Welcome " + userObject.displayName + "!";
-      }
-      else if (userObject.username) {
-          welcomeMsg.innerHTML = "Welcome " + userObject.username + "!";
-      }
-      else {
-          welcomeMsg.innerHTML = "Welcome guest!";
-      }
-   }
+    }
 
-   /** Creates a list of poll items.*/
-   function createProfilePollList(polls) {
-       var i = 0;
-       for (i = 0; i < polls.length; i++) {
-           var pollName = polls[i].name;
-           var pollID = polls[i]._id;
-           var pollLink = '<a href="' + pollUrl + '/' + pollID + '" ' + style + '>' + pollName +
-               '</a>';
+}
 
-           var pollItem = document.createElement('li');
-           pollItem.innerHTML = pollLink;
-
-           profilePollList.appendChild(pollItem);
-       }
-   };
-
-   /** Requests user data via ajax-get. */
-   ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', apiUrl, function (err, data) {
-      if (err) throw new Error(err);
-	  if (!data) return;
-
-      if ($DEBUG) console.log("Data is " + data);
-      var userObject = JSON.parse(data);
-
-      if (welcomeMsg !== null) setWelcomeMsg(userObject);
-
-      if (profileUsername !== null) {
-         updateHtmlElement(userObject, profileUsername, 'username');
-      }
-
-      if (profilePollList !== null) {
-          createProfilePollList(userObject.polls);
-      }
-
-   }));
-})();
+module.exports = UserController;
