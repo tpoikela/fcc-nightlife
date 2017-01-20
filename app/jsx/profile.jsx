@@ -13,12 +13,18 @@ class ProfileTop extends React.Component {
         this.userCtrl = new UserController(appUrl);
 
         this.state = {
-            username: '',
-            userID: '',
+            username: null,
+            userID: null,
+            error: null,
         };
     }
 
-    componentDidMount() {
+    log(msg) {
+        console.log("ProfileTop Log: " + msg);
+
+    }
+
+    checkAuthorisation() {
         this.userCtrl.amIAuthorized( (err, data) => {
             if (err) {
                 this.setState({error: 'Error occurred, Please refresh.'});
@@ -30,7 +36,24 @@ class ProfileTop extends React.Component {
                 });
             }
 
+            this.log('DEBUG: state.userID: ' + this.state.userID);
+            this.getUserInfo();
+
         });
+    }
+
+    getUserInfo() {
+        var username = this.state.username;
+        this.userCtrl.getUserProfileData(username, (err, data) => {
+            if (err) this.setState({error: "An error occurred."});
+            else {
+                this.log("ProfileTop got data: " + JSON.stringify(data));
+            }
+        });
+    }
+
+    componentDidMount() {
+        this.checkAuthorisation();
     }
 
     render() {
