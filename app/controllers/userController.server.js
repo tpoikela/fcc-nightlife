@@ -87,5 +87,17 @@ module.exports = function(path) {
 
     };
 
+    /** Given username, fetches corresponding user data from the DB and passes
+     * it to callback.*/
+    this.getUserByName = function(username, cb) {
+        User.findOne({'username': username}, (err, user) => {
+            if (err) return cb(err);
+            else {
+                if (user) cb(null, user);
+                else cb(null, null);
+            }
+        });
+    };
+
 };
 
