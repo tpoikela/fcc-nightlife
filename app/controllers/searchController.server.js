@@ -42,7 +42,7 @@ var requestYelp = function(setParams, cb) {
 	/* Add the query string to the url */
 	var apiURL = yelpUrl+'?'+paramURL;
 
-    console.log("Yelp search URL: " + apiURL);
+    console.log("Yelp search URL: |" + apiURL + "|");
 
 	/* Then we use request to send make the API Request */
 	request(apiURL, function(error, response, body){
