@@ -175,6 +175,26 @@ module.exports = function (app, passport) {
             }
         });
 
+    app.route('/user/:name')
+        .get(isLoggedIn, (req, res) => {
+            var username = req.params.name;
+            if (username === req.user.username) {
+                // TODO send actual user profile data
+                userController.getUserByName(username, (err, data) => {
+                    if (err) {
+                        logError('/user/' + username, err);
+                        res.sendStatus(500);
+                    }
+                    else {
+                        // TODO don't send password
+                        res.json(data);
+                    }
+                });
+            }
+            else {
+                res.sendStatus(403); // Forbidden
+            }
+        });
     //---------------------
     // Routes for searching
     //---------------------
