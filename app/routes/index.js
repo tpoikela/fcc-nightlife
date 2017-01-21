@@ -147,7 +147,13 @@ module.exports = function (app, passport) {
                         logError('/going', err);
                         res.sendStatus(500);
                     }
-                    else res.sendStatus(200);
+                    else {
+                        // obj should contain userID + venueID now
+                        userController.updateUserVenueInfo(obj, (err) => {
+                            if (err) res.sendStatus(500); // Shoul
+                            else res.sendStatus(200);
+                        });
+                    }
                 });
             }
             else {
