@@ -15,6 +15,8 @@ var VenueController = function() {
                 Venue.findOne({appID: appID}, (err, venue) => {
                     if (err) cb(err);
                     if (venue) {
+                        obj.userID = userID;
+                        obj.venueID = venue._id;
                         if (cmd.add) venue.addGoing(userID, cb);
                         else venue.removeGoing(userID, cb);
                     }
@@ -25,6 +27,8 @@ var VenueController = function() {
                         newVenue.save((err) => {
                             if (err) cb(err);
                             console.log("Saved new venue ID " + appID);
+                            obj.userID = userID;
+                            obj.venueID = newVenue._id;
                             cb(null);
                         });
                     }
