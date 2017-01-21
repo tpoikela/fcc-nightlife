@@ -28,8 +28,8 @@ var UserSchema = new Schema({
         password: String,
     },
 
-    favourites: [],
-    venues: [{type: ObjectId, ref: 'Venue' }]
+    favourites: [{type: ObjectId, ref: 'Venue'}],
+    venues: [{type: ObjectId, ref: 'Venue'}],
 
 },
 {collection: "nightlife_users"} // Selects the collection name explicitly
@@ -50,19 +50,19 @@ UserSchema.statics.getUserID = function(username, cb) {
 
 /** Adds one venue for the user.*/
 UserSchema.methods.addVenue = function(venueID, cb) {
-    var going = this.going;
-    going.push(venueID);
-    var obj = {going: going};
+    var venues = this.venues;
+    venues.push(venueID);
+    var obj = {venues: venues};
     this.updateInfo(obj, cb);
 };
 
 /** Removes one venue from the user.*/
 UserSchema.methods.removeVenue = function(venueID, cb) {
-    var going = this.going;
-    var index = going.indexOf(venueID);
+    var venues = this.venues;
+    var index = venues.indexOf(venueID);
     if (index >= 0) {
-        going.splice(index, 1);
-        var obj = {going: going};
+        venues.splice(index, 1);
+        var obj = {venues: venues};
         this.updateInfo(obj, cb);
     }
     else {
