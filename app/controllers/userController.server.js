@@ -51,7 +51,7 @@ module.exports = function(path) {
 
     var sendAuthenticatedUserInfo = function(res, username) {
         User.findOne({'username': username})
-            .populate("venues")
+            .populate('venues favourites')
             .exec(function(err, user) {
                 if (err) return errorHandler(err, res);
 
@@ -90,11 +90,32 @@ module.exports = function(path) {
     /** Given username, fetches corresponding user data from the DB and passes
      * it to callback.*/
     this.getUserByName = function(username, cb) {
-        User.findOne({'username': username}, (err, user) => {
+        User.findOne({'username': username})
+            //.populate('venues favourites')
+            .populate('venues')
+            .exec( (err, user) => {
             if (err) return cb(err);
             else {
                 if (user) cb(null, user);
                 else cb(null, null);
+            }
+        });
+    };
+
+    /** Adds a venue where user is going. Needs appID and username to perform
+     * the update.*/
+    this.updateUserVenueInfo = function(obj, cb) {
+        this.getUserByName( obj.username, (err, user) => {
+            if (err) return cb(err)
+            else {
+                if (user) {
+                    if (obj.going) user.addVenue(obj.venueID, cb);
+                    else user.removeVenue(obj.venueID, cb);
+                }
+                else {
+                    // No user info was found
+                    cb(null, null);
+                }
             }
         });
     };
