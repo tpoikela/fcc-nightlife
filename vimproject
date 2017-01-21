@@ -32,9 +32,9 @@ fcc-nightlife=~/git/fcc-nightlife CD=~/git/fcc-nightlife filter="*.*" {
  }
  app=app {
   controllers=controllers {
+   searchController.server.js
    userController.client.js
    userController.server.js
-   searchController.server.js
    venueController.server.js
   }
   config=config {
@@ -55,8 +55,10 @@ fcc-nightlife=~/git/fcc-nightlife CD=~/git/fcc-nightlife filter="*.*" {
   jsx=jsx {
    app.jsx
    navbar.jsx
+   profile.jsx
    searchinput.jsx
-
+   top.jsx
+   venuelist.jsx
   }
  }
  node_modules=node_modules {
