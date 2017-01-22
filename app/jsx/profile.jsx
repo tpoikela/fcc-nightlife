@@ -21,9 +21,11 @@ class ProfileVenueItem extends React.Component {
         var venue = this.props.venue;
         var venueStr = JSON.stringify(venue);
 
+        var link = <a href={venue.url}>{venue.name}</a>;
+
         return (
             <li>
-                {venueStr}
+                {link} 
                 <button onClick={this.onRemoveClick}>Remove</button>
             </li>
         );
@@ -54,6 +56,17 @@ class ProfileTop extends React.Component {
     // TODO: Remove a venue where user is going to
     onRemoveClick(appID) {
         console.log("onRemoveClick with appID: " + appID);
+        var url = appUrl + '/going';
+        var data = {appID: appID, username: this.state.username,
+            going: false, userID: this.state.userID};
+        ajax.post(url, data, (err, respText) => {
+            if (err) {
+                this.setState({error: 'An error occurred.'});
+            }
+            else {
+                this.getUserInfo(); // Update user info after removal
+            }
+        });
 
     }
 
