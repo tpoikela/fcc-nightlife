@@ -133,6 +133,7 @@ module.exports = function (app, passport) {
     app.route('/going')
         .post(isLoggedIn, (req, res) => {
             var obj = {
+                venue: req.body.venue,
                 username: req.body.username,
                 appID: req.body.appID,
                 going: req.body.going,
@@ -144,13 +145,16 @@ module.exports = function (app, passport) {
             if (req.user.username === obj.username) {
                 venueController.handleGoingReq(obj, (err) => {
                     if (err) {
-                        logError('/going', err);
+                        logError('/going venueCtrl', err);
                         res.sendStatus(500);
                     }
                     else {
                         // obj should contain userID + venueID now
                         userController.updateUserVenueInfo(obj, (err) => {
-                            if (err) res.sendStatus(500); // Shoul
+                            if (err) {
+                                logError('/going userCtrl', err);
+                                res.sendStatus(500);
+                            }
                             else res.sendStatus(200);
                         });
                     }
