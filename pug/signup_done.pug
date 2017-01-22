@@ -16,6 +16,10 @@ html
     div.container.text-center
       - if (ok) {
         p.text-success Registered user #{name} successfully.
+        p
+          | Click 
+          a(href='/login') here 
+          | to login.
       - } else {
         p.text-danger
           Username #{name} already taken. Try again.
