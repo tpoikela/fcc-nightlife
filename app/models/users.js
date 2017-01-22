@@ -59,14 +59,23 @@ UserSchema.methods.addVenue = function(venueID, cb) {
 /** Removes one venue from the user.*/
 UserSchema.methods.removeVenue = function(venueID, cb) {
     var venues = this.venues;
-    var index = venues.indexOf(venueID);
+
+    var index = venues.findIndex( (item, index, array) => {
+        console.log("===> Comp: " + venueID + ' to ' + item);
+        if (item.equals(venueID)) return true;
+        return false;
+    });
+
+    console.log("Index is now: " + index);
+
     if (index >= 0) {
         venues.splice(index, 1);
         var obj = {venues: venues};
         this.updateInfo(obj, cb);
     }
     else {
-        var err = new Error("User not going to this venue");
+        var msg = `User ${this.username} not going to venue ${venueID}`;
+        var err = new Error(msg);
         cb(err);
     }
 
