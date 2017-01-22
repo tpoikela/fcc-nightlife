@@ -61,7 +61,7 @@ class NightlifeTop extends React.Component {
         }
     }
 
-    /** Updates venue going user data. Called after the user click Going
+    /** Adds user to a venue. Called after the user click Going
      * button.*/
     updateVenueData(obj) {
         var data = this.state.data;
@@ -84,6 +84,19 @@ class NightlifeTop extends React.Component {
             }
         }
         this.setState({data: data});
+    }
+
+    /** Given appID, returns corresponding venue from the data.*/
+    getVenueByID(appID) {
+        var venue = this.state.data.find( (item) => {
+            return item.appID === appID;
+        });
+        if (venue) {
+            return venue;
+        }
+        else {
+            return null;
+        }
     }
 
     /** Calls server to update the going vars for all shown venue data.*/
@@ -129,13 +142,14 @@ class NightlifeTop extends React.Component {
 
     onGoingClick(obj) {
         var url = appUrl + '/going';
-        var data = {appID: obj.appID, username: this.state.username,
+        var venue = this.getVenueByID(obj.appID);
+        var data = {venue: venue, appID: obj.appID, username: this.state.username,
             going: obj.going, userID: this.state.userID};
-        _debug("onGoingClick(): data " + JSON.stringify(data));
+        _debug("onGoingClick(): front-end sending data " + JSON.stringify(data));
         _debug("NightLifeTop sending ajax-post to " + url);
         ajax.post(url, data, (err, respText) => {
             if (err) {
-                this.setState({error: 'An error occurred for /going'});
+                this.setState({error: 'An error occurred.'});
             }
             else {
                 _debug("onGoingClick post response OK: " + respText);
