@@ -6,6 +6,7 @@ require("sinon-mongoose");
 
 const mocks = require("node-mocks-http");
 
+const ObjectId = require('mongoose').Schema.Types.ObjectId;
 
 const Fact = require("./factory");
 
@@ -93,7 +94,7 @@ describe('How userController on server-side works', function() {
         findOne.restore();
 
         sinon.mock(User).expects("findOne")
-            .chain("populate").withArgs("polls")
+            .chain("populate").withArgs("venues favourites")
             .chain("exec").yields(null, user);
 
         Promise.all([ctrl.getUser(req, res)]).then(function() {
@@ -110,7 +111,7 @@ describe('How userController on server-side works', function() {
         findOne.restore();
 
         sinon.mock(User).expects("findOne")
-            .chain("populate").withArgs("polls")
+            .chain("populate").withArgs("venues favourites")
             .chain("exec").yields(null, null);
 
         Promise.all([ctrl.getUser(req, res)]).then(function() {
@@ -121,5 +122,14 @@ describe('How userController on server-side works', function() {
         });
 
     });
+
+    /*
+    it('should update user with venue info', function(done) {
+        var obj = {going: false, obj.username: 'xxx'};
+        ctrl.updateUserVenueInfo(obj, (err, data) => {
+
+        });
+    });
+    */
 
 });
