@@ -22,14 +22,19 @@ var VenueController = function() {
                     }
                     else {
                         var newVenue = new Venue();
+                        newVenue.name = obj.venue.name;
+                        newVenue.url = obj.venue.url;
+                        newVenue.location = obj.venue.location;
                         newVenue.appID = appID;
                         newVenue.going.push(userID);
                         newVenue.save((err) => {
-                            if (err) cb(err);
-                            console.log("Saved new venue ID " + appID);
-                            obj.userID = userID;
-                            obj.venueID = newVenue._id;
-                            cb(null);
+                            if (err) return cb(err);
+                            else {
+                                console.log("Saved new venue ID " + appID);
+                                obj.userID = userID;
+                                obj.venueID = newVenue._id;
+                                cb(null);
+                            }
                         });
                     }
 
