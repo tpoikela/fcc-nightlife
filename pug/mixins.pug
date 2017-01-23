@@ -7,13 +7,14 @@
 mixin metaProps()
   meta(property="og:url" content="" + domain)
   meta(property="og:type" content="website")
-  meta(property="og:title" content="FCC Nightlife App")
+  meta(property="og:title" content="CoordiNight")
   meta(property="og:description" content="You can create polls, and vote in other polls!")
   //- meta(property="og:image" content="http://www.your-domain.com/path/image.jpg" )
 
 mixin styleSheets()
     link(href="" + bs rel="stylesheet" type="text/css")
     link(href="/build/main.css" rel="stylesheet" type="text/css")
+    link(href="/public/css/font-awesome.css" rel="stylesheet" type="text/css")
 
 mixin scripts()
   script(src="https://fb.me/react-15.2.1.min.js")
@@ -31,7 +32,7 @@ mixin pageHead(pageTitle)
 //- Main navigation bar at the top of the page.
 mixin topMenu(title)
   header
-    ul
+    ul.top-menu
       li
         a.menu(href="/") Home
       - if (isAuth) {
@@ -51,10 +52,20 @@ mixin topMenu(title)
 
 mixin appTitle()
   div.container
-    h1.nightlife-text Nightlife App
+    h1.nightlife-text CoordiNight
 
+//- Footer for the pages with various link symbols
 mixin appFooter()
   footer.container
-    p
-      a.author(href="http://www.freecodecamp.com/tpoikela") tpoikela
+    ul.footer-links
+      li.footer-link-icon
+        a(href="https://www.github.com/tpoikela")
+          i(class="fa fa-github fa-2x")
+      li.footer-link-icon
+        a(href="https://www.twitter.com/tuomaspoi")
+          i(class="fa fa-twitter fa-2x")
+      li.footer-link-icon
+        a(href="https://www.freecodecamp.com/tpoikela")
+          i(class="fa fa-free-code-camp fa-2x")
+    p Tuomas Poikela, 2017
 
