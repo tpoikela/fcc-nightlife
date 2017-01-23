@@ -28,7 +28,7 @@ gulp.task('sass', function() {
 
 gulp.task('watch', ['build'], function () {
     //gulp.watch(jsxDir + '/*.jsx', ['build']);
-    gulp.watch('./app/**/*.*', ['build']);
+    gulp.watch('./app/**/*.*', ['build', 'tags']);
     gulp.watch('./scss/*.*', ['sass']);
 });
 
