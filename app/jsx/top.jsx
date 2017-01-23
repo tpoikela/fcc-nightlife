@@ -29,6 +29,7 @@ class NightlifeTop extends React.Component {
             isAuth: false,
             username: null,
             userID: null,
+            loading: false,
         };
 
         this.userCtrl = new UserController(appUrl);
@@ -44,15 +45,17 @@ class NightlifeTop extends React.Component {
         if (q) {
             var url = appUrl + '/search/' + q;
             _debug("Creating ajax-get with URL: " + url);
+            this.setState({loading: true});
             ajax.get(url, (err, respText) => {
                 if (err) {
-                    this.setState({error: 'An error occurred during search'});
+                    this.setState({error: 'An error occurred during search',
+                        loading: false});
                 }
                 else {
                     var data = JSON.parse(respText);
                     sessionStorage.setItem(this.storageKey,
                         JSON.stringify({q: q}));
-                    this.setState({data: data});
+                    this.setState({data: data, loading: false});
                 }
             });
         }
@@ -207,20 +210,28 @@ class NightlifeTop extends React.Component {
         var authMsg = isAuth ? "You're logged in as " + this.state.username
             : "Not logged in";
 
-        return (
-            <div id='nightlife-app-main-div'>
-                <h1>NightlifeTop</h1>
-                <hr/>
-                <p>This is a nightlife app for doing stuff.</p>
-                <p id="status-bar">Status: {authMsg}</p>
-                <SearchInput onClick={this.search} />
-                <p id='error-msg'>{error}</p>
-                <VenueList
+        var loading = this.state.loading;
+        var venueList = null;
+        if (!loading) {
+            venueList = (<VenueList
                     isAuth={isAuth}
                     data={data}
                     onGoingClick={this.onGoingClick}
                     userID = {userID}
-                />
+                />);
+        }
+        else {
+            venueList= (<div>
+                <i className="fa fa-spinner fa-2x"></i>
+            </div>);
+        }
+
+        return (
+            <div id='nightlife-app-main-div'>
+                <p id="status-bar">{authMsg}</p>
+                <SearchInput onClick={this.search} />
+                <p id='error-msg' className='error-text'>{error}</p>
+                {venueList}
                 <hr/>
             </div>
         );
