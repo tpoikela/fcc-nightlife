@@ -1,5 +1,17 @@
 
 
-#test-div {
-    background-color: Red;
+.top-menu {
+    list-style-type: none;
+
+    li {
+        display: inline-block;
+    }
+
 }
+
+.footer-link-icon {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+
