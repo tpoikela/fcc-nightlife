@@ -1,19 +1,68 @@
 
 
+
+
+// Color theme 1 is set by these variables
 $blue:  #000066;
 $white: #FFFFCC;
 $lblue: #CCCCFF;
 $pink:  #990066;
+$color-theme1: $blue, $white, $lblue, $pink;
 
+$theme: $color-theme1; // Assign the desired 4-color them here
+$link-color: nth($theme, 1);
+$text-color: nth($theme, 2);
+$support-color: nth($theme, 3);
+$bg-color: nth($theme, 4);
+$dark-text: nth($theme, 1);
+
+$error-color: Red;
+
+$base-font-size: 14px;
+$big-font-size: 18px;
 
 body {
     background: url('/public/img/bg-noise.png');
-    background-color: $pink;
-    color: $white;
+    background-color: $bg-color;
+    color: $text-color;
+    font-size: $base-font-size;
 }
 
-i.fa {
-    color: $white;
+a {
+    color: $support-color;
+
+}
+
+h1.nightlife-text {
+    font-size: 48;
+}
+
+input {
+    color: $dark-text;
+}
+
+button {
+    color: $link-color;
+    background-color: $support-color;
+}
+
+button:hover {
+    color: $text-color;
+    background-color: darken($support-color, 10%);
+}
+
+.text-error {
+    color: $error-color;
+    background-color: transparentize($white, 0.5);
+    padding: 10px;
+}
+
+.img-venue-thumbnail {
+    display: inline-block;
+}
+
+.venue-list-item-btn {
+    display: inline-block;
 }
 
 .top-menu {
@@ -21,8 +70,21 @@ i.fa {
 
     li {
         display: inline-block;
+
+        background-color: $text-color;
+        border: solid 1px $link-color;
+        border-radius: 7px;
+        padding: 5px 10px;
+        font-size: $big-font-size;
     }
 
+    a {
+        color: $link-color;
+    }
+
+}
+
+nav.author-footer {
 }
 
 .footer-link-icon {
@@ -30,5 +92,7 @@ i.fa {
     margin-right: 10px;
 }
 
-
+i.fa {
+    color: $text-color;
+}
 
