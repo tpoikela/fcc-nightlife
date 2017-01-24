@@ -229,6 +229,7 @@ class NightlifeTop extends React.Component {
         return (
             <div id='nightlife-app-main-div'>
                 <p id="status-bar">{authMsg}</p>
+                <hr/>
                 <SearchInput onClick={this.search} />
                 <p id='error-msg' className='error-text'>{error}</p>
                 {venueList}

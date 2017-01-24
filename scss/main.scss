@@ -1,5 +1,21 @@
 
 
+$blue:  #000066;
+$white: #FFFFCC;
+$lblue: #CCCCFF;
+$pink:  #990066;
+
+
+body {
+    background: url('/public/img/bg-noise.png');
+    background-color: $pink;
+    color: $white;
+}
+
+i.fa {
+    color: $white;
+}
+
 .top-menu {
     list-style-type: none;
 
@@ -13,5 +29,6 @@
     display: inline-block;
     margin-right: 10px;
 }
+
 
 
