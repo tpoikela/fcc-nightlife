@@ -7,27 +7,24 @@ html
   +pageHead("Nightlife about")
 
   body
-    +topMenu("about")
-    +appTitle()
+    +layoutBase()
+      +appTitle()
+      +topMenu("about")
 
-    div.container
-      div.row
-        div.col-md-3
-        div.col-md-6
-          p
-            | Nightlife coordination app for 
-            a(href="http://www.freecodecamp.com") FreeCodeCamp 
-            | fullstack projects.
-          p
-            | You can search for clubs and restaurants, signup to attend a club
-            | and see who else is going tonight, and where.
-          p
-            | You can access the full source code of the project from 
-            a(href="http://www.github/tpoikela/fcc-nightlife") GitHub.
-          p
-            | Powered by 
-            a(href="https:/www.yelp.com") Yelp API.
+    +layoutBase()
+      p
+        | Nightlife coordination app for 
+        a(href="http://www.freecodecamp.com") FreeCodeCamp 
+        | fullstack projects.
+      p
+        | You can search for clubs and restaurants, signup to attend a club
+        | and see who else is going tonight, and where.
+      p
+        | You can access the full source code of the project from 
+        a(href="http://www.github/tpoikela/fcc-nightlife") GitHub.
+      p
+        | Powered by 
+        a(href="https:/www.yelp.com") Yelp API.
 
-        div.col-md-3
-
-    +appFooter()
+    +layoutBase()
+      +appFooter()

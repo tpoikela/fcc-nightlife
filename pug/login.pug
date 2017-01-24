@@ -9,38 +9,34 @@ html
   +pageHead("Nightlife login")
 
   body
-    +topMenu("login")
-    +appTitle()
+    +layoutBase()
+      +appTitle()
+      +topMenu("login")
 
-    div.container
-      div.row
-        div.col-md-3
+    +layoutBase()
+      hr
+      - if (!failed) {
+        p#pw-login-msg Enter username/password:
+      - } else {
+        p#pw-login-msg.text-error Login failed. Please retry.
+      - }
 
-        div.col-md-6.login
+      form(method="POST" action="/auth/userlogin")
 
-          - if (!failed) {
-            p#pw-login-msg Enter username/password:
-          - } else {
-            p#pw-login-msg.text-danger Login failed. Please retry.
-          - }
+        div.form-group
+          label.label.label-default(for="userNameInput") Username
+          input#userNameInput.form-control(
+            name="username" type="text" placeholder="Enter username")
 
-          form(method="POST" action="/auth/userlogin")
+        div.form-group
+          label.label.label-default(for="userPasswordInput") Password
+          input#userPasswordField.form-control(
+            name="password" type="password" placeholder="Password")
 
-            div.form-group
-              label.label.label-default(for="userNameInput") Username
-              input#userNameInput.form-control(
-                name="username" type="text" placeholder="Enter username")
+        button#login-btn(type="submit") Submit
 
-            div.form-group
-              label.label.label-default(for="userPasswordInput") Password
-              input#userPasswordField.form-control(
-                name="password" type="password" placeholder="Password")
+      p No account yet? Then 
+        a(href='/signup') Signup!
 
-            button#login-btn.btn.btn-voting(type="submit") Submit
-
-          p No account yet? Then 
-            a(href='/signup') Signup!
-
-        div.col-md-3
-
-    +appFooter()
+    +layoutBase()
+      +appFooter()

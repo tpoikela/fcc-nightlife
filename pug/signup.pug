@@ -7,42 +7,37 @@ html
   +pageHead("Nightlife signup")
 
   body
-    +topMenu("signup")
-    +appTitle()
+    +layoutBase()
+      +appTitle()
+      +topMenu("signup")
 
-    div.container
-      div.row
-      div.col-md-3
+    +layoutBase()
+      p After registration, you can attend a club or restaurant.
 
-      div.col-md-6
-        p After registration, you can attend a club or restaurant.
+      h2 Signup
 
-        h2 Signup
+      form(method="POST" action="/forms/signup")
 
-        form(method="POST" action="/forms/signup")
+        div.form-group
+          label.label.label-default(for="usernameField") Username
+          input#usernameField.form-control(
+            name="username" type="text"
+            placeholder="Username" pattern="^[^<>/]+$"
+            title="No <,/ or > in username")
 
-          div.form-group
-            label.label.label-default(for="usernameField") Username
-            input#usernameField.form-control(
-              name="username" type="text"
-              placeholder="Username" pattern="^[^<>/]+$"
-              title="No <,/ or > in username")
+        div.form-group
+          label.label.label-default(for="passwordField") Password
+          input#passwordField.form-control(
+            name="password" type="password"
+            placeholder="Password" required="required"
+            title="Cannot be empty")
 
-          div.form-group
-            label.label.label-default(for="passwordField") Password
-            input#passwordField.form-control(
-              name="password" type="password"
-              placeholder="Password" required="required"
-              title="Cannot be empty")
+        button#signup-btn.btn.btn-voting(type="submit") Signup!
 
-          button#signup-btn.btn.btn-voting(type="submit") Signup!
+      p 
+        | If you already have an account, click 
+        a(href="/login") here 
+        | to login.
 
-        p 
-          | If you already have an account, click 
-          a(href="/login") here 
-          | to login.
-
-      div.col-md-3
-
-
-    +appFooter()
+    +layoutBase()
+      +appFooter()

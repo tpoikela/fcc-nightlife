@@ -7,17 +7,10 @@ html
   +pageHead("Nightlife home")
 
   body
-    +topMenu("index")
-    +appTitle()
-
-    div.container
-      div.row
-        div.col-xs-2
-        div.col-xs-8
-          p Search for a club or restaurant near you:
-          div#main-app
-        div.col-xs-2
-
-    +appFooter()
+    +layoutBase()
+      +appTitle()
+      +topMenu("index")
+      div#main-app
+      +appFooter()
 
     script(type="text/javascript" src="/build/bundle.js" charset="utf-8")

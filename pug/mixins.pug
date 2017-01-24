@@ -29,6 +29,15 @@ mixin pageHead(pageTitle)
     +styleSheets()
     +scripts()
 
+//- Defines the page basic layout
+mixin layoutBase()
+  div.container
+    div.row
+      div.col-xs-2
+      div.col-xs-8
+        block
+      div.col-xs-2
+
 //- Main navigation bar at the top of the page.
 mixin topMenu(title)
   header
@@ -49,14 +58,15 @@ mixin topMenu(title)
       - }
       li
         a.menu(href="/about") About
+    hr
 
 mixin appTitle()
-  div.container
-    h1.nightlife-text CoordiNight
+  h1.nightlife-text CoordiNight
 
 //- Footer for the pages with various link symbols
 mixin appFooter()
-  footer.container
+  nav.author-footer
+    hr
     ul.footer-links
       li.footer-link-icon
         a(href="https://www.github.com/tpoikela")

@@ -10,10 +10,11 @@ html
 
   body
 
-    +topMenu("signup_done")
-    +appTitle()
+    +layoutBase()
+      +appTitle()
+      +topMenu("signup_done")
 
-    div.container.text-center
+    +layoutBase()
       - if (ok) {
         p.text-success Registered user #{name} successfully.
         p
@@ -25,5 +26,5 @@ html
           Username #{name} already taken. Try again.
       - }
 
-
-    +appFooter()
+    +layoutBase()
+      +appFooter()
