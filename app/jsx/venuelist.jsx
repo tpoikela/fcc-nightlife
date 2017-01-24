@@ -38,10 +38,10 @@ class VenueListItem extends React.Component {
         var buttons = null;
         if (isAuth) {
             buttons = (
-                <div id='venue-list-item-btn'>
-                <button onClick={this.onGoingClick}>{goingButtonText}</button>
-                <button onClick={this.addToFavourites}>Add to favourites</button>
-                </div>
+                <span className='venue-list-item-btn'>
+                    <button onClick={this.onGoingClick}>{goingButtonText}</button>
+                    <button onClick={this.addToFavourites}>Add to favourites</button>
+                </span>
             );
         }
 
@@ -53,10 +53,12 @@ class VenueListItem extends React.Component {
 
         return (
             <li className='venue-list-item'>
-                <img src={image}/>
-                {buttons}
-                <a href={url}>{data.name}</a>
-                <span className='li-going'> | {nGoing} going | {userGoing}</span>
+                <img className='img-venue-thumbnail' src={image}/>
+                <div style="display: inline-block;">
+                    <a href={url}>{data.name}</a>
+                    {buttons}
+                </div>
+                <p className='li-going'> | {nGoing} going | {userGoing}</p>
                 {descrComp}
             </li>
         );
