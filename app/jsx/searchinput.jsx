@@ -26,12 +26,15 @@ class SearchInput extends React.Component {
         var className = this.props.className || 'search-input-div';
         return (
             <div className={className}>
-                <input
+                <input className='fa search-input'
                     name='q'
                     value={this.state.q}
                     onChange={this.onChange}
+                    placeholder='Where are you?'
                 />
-                <button onClick={this.onSearchClick}>Search</button>
+                <button id='q-button' onClick={this.onSearchClick}>
+                    <i className='search-icon fa fa-search fa-2x'></i>
+                </button>
             </div>
         );
 

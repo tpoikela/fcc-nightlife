@@ -13,10 +13,8 @@ html
       +appTitle()
       +topMenu("login")
 
-    +layoutBase()
-      hr
       - if (!failed) {
-        p#pw-login-msg Enter username/password:
+        p#pw-login-msg Please enter username and password:
       - } else {
         p#pw-login-msg.text-error Login failed. Please retry.
       - }
@@ -33,10 +31,10 @@ html
           input#userPasswordField.form-control(
             name="password" type="password" placeholder="Password")
 
-        button#login-btn(type="submit") Submit
+        button#login-btn.btn-night(type="submit") Submit
 
+      br
       p No account yet? Then 
         a(href='/signup') Signup!
 
-    +layoutBase()
       +appFooter()

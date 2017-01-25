@@ -222,13 +222,12 @@ class NightlifeTop extends React.Component {
         }
         else {
             venueList= (<div>
-                <i className="fa fa-spinner fa-2x"></i>
+                <i className="fa fa-spin fa-spinner fa-2x"></i>
             </div>);
         }
 
         return (
             <div id='nightlife-app-main-div'>
-                <p id="status-bar">{authMsg}</p>
                 <p>Search for a place near you:</p>
                 <SearchInput onClick={this.search} />
                 <p id='error-msg' className='error-text'>{error}</p>

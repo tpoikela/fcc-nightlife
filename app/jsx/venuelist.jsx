@@ -94,7 +94,6 @@ class VenueList extends React.Component {
 
         return (
             <div className={className}>
-                <h2>List of places</h2>
                 <ul>
                     {listItems}
                 </ul>

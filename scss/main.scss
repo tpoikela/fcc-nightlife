@@ -1,7 +1,4 @@
 
-
-
-
 // Color theme 1 is set by these variables
 $blue:  #000066;
 $white: #FFFFCC;
@@ -30,23 +27,26 @@ body {
 
 a {
     color: $support-color;
-
 }
 
-h1.nightlife-text {
-    font-size: 48;
+h1.app-title-text {
+    font-size: 48px;
+    color: $white;
+    margin-bottom: 20px;
 }
 
 input {
     color: $dark-text;
 }
 
-button {
+.btn-night {
     color: $link-color;
     background-color: $support-color;
+    height: 30px;
+    width: 100px;
 }
 
-button:hover {
+.btn-night:hover {
     color: $text-color;
     background-color: darken($support-color, 10%);
 }
@@ -67,6 +67,7 @@ button:hover {
 
 .top-menu {
     list-style-type: none;
+    padding-left: 0px;
 
     li {
         display: inline-block;
@@ -78,21 +79,41 @@ button:hover {
         font-size: $big-font-size;
     }
 
+    li:hover {
+        background-color: darken($text-color, 10%);
+    }
+
     a {
         color: $link-color;
     }
 
 }
 
-nav.author-footer {
+ul.footer-links {
+    padding-left: 0px;
 }
 
 .footer-link-icon {
     display: inline-block;
     margin-right: 10px;
+
+    i {
+        color: $text-color;
+    }
 }
 
+/*
 i.fa {
     color: $text-color;
 }
+*/
 
+.search-icon {
+    color: $link-color;
+}
+
+#q-button {
+    top: 5px;
+    position: relative;
+
+}

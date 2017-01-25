@@ -61,11 +61,14 @@ mixin topMenu(title)
     hr
 
 mixin appTitle()
-  h1.nightlife-text CoordiNight
+  h1.app-title-text CoordiNight
+
+mixin button(text)
+  button.btn-night {text}
 
 //- Footer for the pages with various link symbols
 mixin appFooter()
-  nav.author-footer
+  div.author-footer
     hr
     ul.footer-links
       li.footer-link-icon
