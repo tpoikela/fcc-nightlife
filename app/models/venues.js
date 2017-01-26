@@ -2,11 +2,11 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
+const Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
-/** A schema for a venue where people can go to. It must have name and unique
+/* A schema for a venue where people can go to. It must have name and unique
  * ID.
  */
 var VenueSchema = new Schema({
@@ -14,39 +14,39 @@ var VenueSchema = new Schema({
     appID: {
         unique: true,
         required: true,
-        type: String,
+        type: String
     },
 
     name: {
-        //required: true,
+        // required: true,
         type: String
     },
 
     location: {
         type: Object,
-        //required: true,
+        // required: true,
         city: {
-            type: String,
-        },
+            type: String
+        }
     },
 
     descr: {},
 
     url: {
-        //TODO
+        // TODO
     },
 
     img: {
-        //TODO
+        // TODO
     },
 
-    going: [{type: ObjectId, ref: 'User'}],
+    going: [{type: ObjectId, ref: 'User'}]
 
 },
 {collection: 'nightlife_venues'}
 );
 
-/** Updates the object with a going user.*/
+/* Updates the object with a going user.*/
 VenueSchema.methods.addGoing = function(userID, cb) {
     var going = this.going;
     var index = going.indexOf(userID);
@@ -56,12 +56,12 @@ VenueSchema.methods.addGoing = function(userID, cb) {
         this.model('Venue').update({_id: this._id}, setVals, {}, cb);
     }
     else {
-        var err = new Error("User already going to the venue. Cannot add.");
+        var err = new Error('User already going to the venue. Cannot add.');
         cb(err);
     }
 };
 
-/** Removes one going user.*/
+/* Removes one going user.*/
 VenueSchema.methods.removeGoing = function(userID, cb) {
     var index = this.going.indexOf(userID);
     if (index >= 0) {
@@ -72,7 +72,7 @@ VenueSchema.methods.removeGoing = function(userID, cb) {
         this.model('Venue').update({_id: this._id}, setVals, {}, cb);
     }
     else {
-        var err = new Error("User is not going to the venue. Cannot remove.");
+        var err = new Error('User is not going to the venue. Cannot remove.');
         cb(err);
     }
 

@@ -1,9 +1,9 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-
 const Validation = require('../common/validation.js');
+
+const Schema = mongoose.Schema;
 
 var validator = new Validation();
 
@@ -18,37 +18,36 @@ var UserSchema = new Schema({
         type: String,
         validate: {
             validator: validator.validateName,
-            message: "Name cannot contain < or >",
-        },
+            message: 'Name cannot contain < or >'
+        }
     },
 
     // Used for local user and password auth
     local: {
         username: String,
-        password: String,
+        password: String
     },
 
     favourites: [{type: ObjectId, ref: 'Venue'}],
-    venues: [{type: ObjectId, ref: 'Venue'}],
+    venues: [{type: ObjectId, ref: 'Venue'}]
 
 },
-{collection: "nightlife_users"} // Selects the collection name explicitly
+// Selects the collection name explicitly
+{collection: 'nightlife_users'}
 );
 
-/** Returns user ID corresponding to the given user.*/
+/* Calls given callback with user ID corresponding to the given user.*/
 UserSchema.statics.getUserID = function(username, cb) {
     this.model('User').findOne({username: username}, (err, data) => {
-        if (err) cb(err);
-        if (data) return cb(null, data._id);
+        if (err) {return cb(err);}
+        if (data) {return cb(null, data._id);}
 
-        var error = new Error("No user with given ID found.");
-        cb(error);
-
+        var error = new Error('No user with given ID found.');
+        return cb(error);
     });
-
 };
 
-/** Adds one venue for the user.*/
+/* Adds one venue for the user.*/
 UserSchema.methods.addVenue = function(venueID, cb) {
     var venues = this.venues;
     venues.push(venueID);
@@ -56,17 +55,17 @@ UserSchema.methods.addVenue = function(venueID, cb) {
     this.updateInfo(obj, cb);
 };
 
-/** Removes one venue from the user.*/
+/* Removes one venue from the user.*/
 UserSchema.methods.removeVenue = function(venueID, cb) {
     var venues = this.venues;
 
-    var index = venues.findIndex( (item, index, array) => {
-        console.log("===> Comp: " + venueID + ' to ' + item);
-        if (item.equals(venueID)) return true;
+    var index = venues.findIndex( (item) => {
+        console.log('===> Comp: ' + venueID + ' to ' + item);
+        if (item.equals(venueID)) {return true;}
         return false;
     });
 
-    console.log("Index is now: " + index);
+    console.log('Index is now: ' + index);
 
     if (index >= 0) {
         venues.splice(index, 1);
@@ -81,12 +80,12 @@ UserSchema.methods.removeVenue = function(venueID, cb) {
 
 };
 
-/** Updates the user info with given object. Note that obj must match the user
+/* Updates the user info with given object. Note that obj must match the user
  * schema.*/
 UserSchema.methods.updateInfo = function(obj, cb) {
     var setVals = {$set: obj};
     this.model('User').update({_id: this._id}, setVals, {}, (err) => {
-        if (err) cb(err);
+        if (err) {cb(err);}
         cb(null);
     });
 
