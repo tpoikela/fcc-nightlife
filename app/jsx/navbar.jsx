@@ -1,4 +1,7 @@
 
+'use strict';
+
+var React = require('react');
 
 class Navbar extends React.Component {
 
@@ -8,16 +11,16 @@ class Navbar extends React.Component {
 
     render() {
         return (
-            <div className="container">
+            <div className='container'>
                 <ul>
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="/signup">Signup</a></li>
-                    <li><a href="/about">About</a></li>
+                    <li><a href='/login'>Login</a></li>
+                    <li><a href='/signup'>Signup</a></li>
+                    <li><a href='/about'>About</a></li>
                 </ul>
             </div>
         );
     }
 
-};
+}
 
 module.exports = Navbar;

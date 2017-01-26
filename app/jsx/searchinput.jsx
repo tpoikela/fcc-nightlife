@@ -1,11 +1,15 @@
 
+'use strict';
+
+var React = require('react');
+
 /** Component which handles the search input updates.*/
 class SearchInput extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            q: '', // Required for <input>
+            q: ''
         };
 
         // Mandatory binding for event handlers
@@ -18,7 +22,7 @@ class SearchInput extends React.Component {
         this.setState({q: q});
     }
 
-    onSearchClick(e) {
+    onSearchClick() {
         this.props.onClick(this.state.q);
     }
 
@@ -28,18 +32,23 @@ class SearchInput extends React.Component {
             <div className={className}>
                 <input className='fa search-input'
                     name='q'
-                    value={this.state.q}
                     onChange={this.onChange}
                     placeholder='Where are you?'
+                    value={this.state.q}
                 />
                 <button id='q-button' onClick={this.onSearchClick}>
-                    <i className='search-icon fa fa-search fa-2x'></i>
+                    <i className='search-icon fa fa-search fa-2x'/>
                 </button>
             </div>
         );
 
     }
 }
+
+SearchInput.propTypes = {
+    className: React.PropTypes.string,
+    onClick: React.PropTypes.func
+};
 
 module.exports = SearchInput;
 

@@ -1,37 +1,12 @@
 
 'use strict';
 
+var React = require('react');
+
 const appUrl = window.location.origin;
 const ajax = require('../common/ajax-functions.js');
 const UserController = require('../controllers/userController.client');
-
-/** Renders one venue item for the profile page with all controls.*/
-class ProfileVenueItem extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.onRemoveClick = this.onRemoveClick.bind(this);
-    }
-
-    onRemoveClick() {
-        this.props.onRemoveClick(this.props.venue.appID);
-    }
-
-    render() {
-        var venue = this.props.venue;
-        var venueStr = JSON.stringify(venue);
-
-        var link = <a href={venue.url}>{venue.name}</a>;
-
-        return (
-            <li>
-                {link} 
-                <button onClick={this.onRemoveClick}>Remove</button>
-            </li>
-        );
-    }
-
-}
+const ProfileVenueItem = require('./prof-item.jsx');
 
 /** This component is used at the profile page of a user.*/
 class ProfileTop extends React.Component {
@@ -45,17 +20,17 @@ class ProfileTop extends React.Component {
         this.state = {
             username: null,
             userID: null,
-            error: null,
+            error: null
         };
     }
 
     log(msg) {
-        console.log("ProfileTop Log: " + msg);
+        console.log('ProfileTop Log: ' + msg);
     }
 
     // TODO: Remove a venue where user is going to
     onRemoveClick(appID) {
-        console.log("onRemoveClick with appID: " + appID);
+        console.log('onRemoveClick with appID: ' + appID);
         var url = appUrl + '/going';
         var data = {appID: appID, username: this.state.username,
             going: false, userID: this.state.userID};
@@ -64,7 +39,9 @@ class ProfileTop extends React.Component {
                 this.setState({error: 'An error occurred.'});
             }
             else {
-                this.getUserInfo(); // Update user info after removal
+                this.log('ajax.post resp OK: ' + respText);
+                // Update user info after removal
+                this.getUserInfo();
             }
         });
 
@@ -78,7 +55,7 @@ class ProfileTop extends React.Component {
             else {
                 this.setState({
                     username: data.username,
-                    userID: data.userID,
+                    userID: data.userID
                 });
             }
 
@@ -88,13 +65,15 @@ class ProfileTop extends React.Component {
         });
     }
 
-    /** Get user info from the server.*/
+    /** Get user info from the server.
+     * @returns {undefined}
+     * */
     getUserInfo() {
         var username = this.state.username;
         this.userCtrl.getUserProfileData(username, (err, data) => {
-            if (err) this.setState({error: "An error occurred."});
+            if (err) {this.setState({error: 'An error occurred.'});}
             else {
-                this.log("ProfileTop got data: " + JSON.stringify(data));
+                this.log('ProfileTop got data: ' + JSON.stringify(data));
                 this.setState({venues: data.venues});
             }
         });
@@ -113,8 +92,9 @@ class ProfileTop extends React.Component {
         var venueHtml = null;
         if (venues) {
             venueHtml = venues.map( (item, index) => {
-                return (<ProfileVenueItem key={index} venue={item} 
-                    onRemoveClick={this.onRemoveClick} />);
+                return (<ProfileVenueItem key={index}
+                    onRemoveClick={this.onRemoveClick} venue={item}
+                />);
             });
         }
 
@@ -132,5 +112,6 @@ class ProfileTop extends React.Component {
     }
 
 }
+
 
 module.exports = ProfileTop;

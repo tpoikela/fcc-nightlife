@@ -1,15 +1,20 @@
 
 'use strict';
 
+var React = require('react');
+
 var $DEBUG = 1;
 var appUrl = window.location.origin;
 
 var _debug = function(msg) {
-    if ($DEBUG) console.debug(msg);
+    if ($DEBUG) {console.debug(msg);}
+};
+
+var _err = function(msg) {
+    console.error('[ERROR] ' + msg);
 };
 
 var ajax = require('../common/ajax-functions.js');
-var Navbar = require('./navbar.jsx');
 
 var SearchInput = require('./searchinput.jsx');
 var VenueList = require('./venuelist.jsx');
@@ -27,24 +32,26 @@ class NightlifeTop extends React.Component {
             data: [],
             error: null,
             isAuth: false,
-            username: null,
-            userID: null,
             loading: false,
+            userID: null,
+            username: null
         };
 
         this.userCtrl = new UserController(appUrl);
-        this.userCtrl.testFunc("XXX");
 
         this.storageKey = 'nightlife-prev-search';
         this.search = this.search.bind(this);
         this.onGoingClick = this.onGoingClick.bind(this);
     }
 
-    /** Sends a search req to server using ajax-get.*/
+    /** Sends a search req to server using ajax-get.
+     * @param {String} q Search query
+     * @returns {undefined}
+     * */
     search(q) {
         if (q) {
             var url = appUrl + '/search/' + q;
-            _debug("Creating ajax-get with URL: " + url);
+            _debug('Creating ajax-get with URL: ' + url);
             this.setState({loading: true});
             ajax.get(url, (err, respText) => {
                 if (err) {
@@ -60,12 +67,15 @@ class NightlifeTop extends React.Component {
             });
         }
         else {
-            this.setState({error: "No search input given."});
+            this.setState({error: 'No search input given.'});
         }
     }
 
     /** Adds user to a venue. Called after the user click Going
-     * button.*/
+     * button.
+     * @param {Object} obj Contains userID and venue info.
+     * @returns {undefined}
+     * */
     updateVenueData(obj) {
         var data = this.state.data;
         var vData = data.find( item => {
@@ -73,23 +83,27 @@ class NightlifeTop extends React.Component {
         });
 
         if (obj.going) {
-            _debug("Adding user " + obj.userID + " to venue " + obj.appID);
+            _debug('Adding user ' + obj.userID + ' to venue ' + obj.appID);
             vData.going.push(this.state.userID);
         }
         else {
             var index = vData.going.indexOf(obj.userID);
             if (index >= 0) {
-                _debug("Removing user " + obj.userID + " from venue " + obj.appID);
+                var msg = 'Removing user ' + obj.userID + ' from ' + obj.appID;
+                _debug(msg);
                 vData.going.splice(index, 1);
             }
             else {
-                console.error("No user ID " + obj.userID + " found for venue data.");
+                _err('No user ID ' + obj.userID + ' found for venue data.');
             }
         }
         this.setState({data: data});
     }
 
-    /** Given appID, returns corresponding venue from the data.*/
+    /** Given appID, returns corresponding venue from the data.
+     * @param {String} appID ID for the venue
+     * @returns {Object} Or null
+     * */
     getVenueByID(appID) {
         var venue = this.state.data.find( (item) => {
             return item.appID === appID;
@@ -102,18 +116,20 @@ class NightlifeTop extends React.Component {
         }
     }
 
-    /** Calls server to update the going vars for all shown venue data.*/
+    /** Calls server to update the going vars for all shown venue data.
+     * @returns {undefined}
+     * */
     updateGoingVars() {
         var url = appUrl + '/getgoing';
         var appIDs = this.state.data.map( item => {
             return {appID: item.appID};
         });
         if (appIDs.length === 0) {
-            _debug("Returning because appIDs.len is 0.");
+            _debug('Returning because appIDs.len is 0.');
             return;
         }
         else {
-            _debug("appIDs.len is " + appIDs.length);
+            _debug('appIDs.len is ' + appIDs.length);
         }
 
         var postData = {appIDs: appIDs};
@@ -122,11 +138,11 @@ class NightlifeTop extends React.Component {
                 this.setState({error: 'Cannot get data from the server.'});
             }
             else {
-                _debug("updateGoingVars post response OK: " + respText);
+                _debug('updateGoingVars post response OK: ' + respText);
                 var gotData = JSON.parse(respText);
                 var venueData = this.state.data;
 
-                _debug("BEFORE: venueData.len " + venueData.length);
+                _debug('BEFORE: venueData.len ' + venueData.length);
 
                 // Use ES6 destructuring
                 gotData.forEach( ({appID, going}) => {
@@ -137,7 +153,7 @@ class NightlifeTop extends React.Component {
                     });
 
                 });
-                _debug("AFTER: venueData.len " + venueData.length);
+                _debug('AFTER: venueData.len ' + venueData.length);
                 this.setState({data: venueData});
             }
         });
@@ -146,16 +162,17 @@ class NightlifeTop extends React.Component {
     onGoingClick(obj) {
         var url = appUrl + '/going';
         var venue = this.getVenueByID(obj.appID);
-        var data = {venue: venue, appID: obj.appID, username: this.state.username,
+        var data = {venue: venue, appID: obj.appID,
+            username: this.state.username,
             going: obj.going, userID: this.state.userID};
-        _debug("onGoingClick(): front-end sending data " + JSON.stringify(data));
-        _debug("NightLifeTop sending ajax-post to " + url);
+        _debug('onGoingClick(): front-end data ' + JSON.stringify(data));
+        _debug('NightLifeTop sending ajax-post to ' + url);
         ajax.post(url, data, (err, respText) => {
             if (err) {
                 this.setState({error: 'An error occurred.'});
             }
             else {
-                _debug("onGoingClick post response OK: " + respText);
+                _debug('onGoingClick post response OK: ' + respText);
                 this.updateVenueData(data);
                 this.updateGoingVars();
             }
@@ -163,8 +180,10 @@ class NightlifeTop extends React.Component {
 
     }
 
-    /** Sends ajax-get to server to check if user is authenticated. The returned
-     * result is only used for GUI element hiding. */
+    /** Sends ajax-get to server to check if user is authenticated. The saved
+     * result is only used for GUI element hiding.
+     * @returns {undefined}
+     * */
     amIAuthorized() {
         this.userCtrl.amIAuthorized( (err, data) => {
             if (err) {
@@ -180,23 +199,25 @@ class NightlifeTop extends React.Component {
         });
     }
 
-    /** Restores previous search from sessionStorage, if any.*/
+    /** Restores previous search from sessionStorage, if any.
+     * @returns {undefined}
+     * */
     restoreSessionData() {
         var dataJSON = sessionStorage.getItem(this.storageKey);
         if (dataJSON) {
             var parsed = JSON.parse(dataJSON);
-            _debug("restoreSessionData: " + dataJSON);
+            _debug('restoreSessionData: ' + dataJSON);
             this.q = parsed.q;
-            _debug("Restore query: " + this.q);
+            _debug('Restore query: ' + this.q);
         }
     }
 
     componentDidMount() {
-        _debug("NightlifeTop componentDidMount()");
+        _debug('NightlifeTop componentDidMount()');
         this.amIAuthorized();
         this.restoreSessionData();
         if (this.q) {
-            _debug("Performing a query from sessionStorage: " + this.q);
+            _debug('Performing a query from sessionStorage: ' + this.q);
             this.search(this.q);
         }
         this.updateGoingVars();
@@ -207,22 +228,20 @@ class NightlifeTop extends React.Component {
         var error = this.state.error;
         var isAuth = this.state.isAuth;
         var userID = this.state.userID;
-        var authMsg = isAuth ? "You're logged in as " + this.state.username
-            : "Not logged in";
 
         var loading = this.state.loading;
         var venueList = null;
         if (!loading) {
             venueList = (<VenueList
-                    isAuth={isAuth}
                     data={data}
+                    isAuth={isAuth}
                     onGoingClick={this.onGoingClick}
                     userID = {userID}
-                />);
+            />);
         }
         else {
-            venueList= (<div>
-                <i className="fa fa-spin fa-spinner fa-2x"></i>
+            venueList = (<div>
+                <i className='fa fa-spin fa-spinner fa-2x'/>
             </div>);
         }
 
@@ -230,12 +249,12 @@ class NightlifeTop extends React.Component {
             <div id='nightlife-app-main-div'>
                 <p>Search for a place near you:</p>
                 <SearchInput onClick={this.search} />
-                <p id='error-msg' className='error-text'>{error}</p>
+                <p className='error-text' id='error-msg'>{error}</p>
                 {venueList}
             </div>
         );
     }
 
-};
+}
 
 module.exports = NightlifeTop;

@@ -55,6 +55,7 @@ fcc-nightlife=~/git/fcc-nightlife CD=~/git/fcc-nightlife filter="*.*" {
   jsx=jsx {
    app.jsx
    navbar.jsx
+   prof-item.jsx
    profile.jsx
    searchinput.jsx
    top.jsx
