@@ -1,14 +1,14 @@
 
 'use strict';
 
-var NightlifeTop = require('./top.jsx');
-var ProfileTop = require('./profile.jsx');
+const NightlifeTop = require('./top.jsx');
+const ProfileTop = require('./profile.jsx');
 
 var mainApp = document.querySelector('#main-app');
 var profileTop = document.querySelector('#profile-app');
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
 if (mainApp) {
     ReactDOM.render(<NightlifeTop />, mainApp);
