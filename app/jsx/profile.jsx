@@ -85,27 +85,33 @@ class ProfileTop extends React.Component {
 
     render() {
         var username = this.state.username;
-        var userID = this.state.userID;
         var venues = this.state.venues;
 
         // Generate the list of venues here
         var venueHtml = null;
+        var venueText = <p>You're not going to any venues.</p>;
         if (venues) {
             venueHtml = venues.map( (item, index) => {
                 return (<ProfileVenueItem key={index}
                     onRemoveClick={this.onRemoveClick} venue={item}
                 />);
             });
+
+            if (venues.length > 0) {
+                venueText = (<div>
+                    <p>You're currently going to the following places:</p>
+                    <ul>
+                        {venueHtml}
+                    </ul>
+                </div>);
+            }
         }
 
+
         return (
-            <div>
-                <p>Welcome {username}</p>
-                <p>User ID: {userID}</p>
-                <p>You're currently going to the following places:</p>
-                <ul>
-                    {venueHtml}
-                </ul>
+            <div className='profile-info'>
+                <h2>Profile: {username}</h2>
+                {venueText}
             </div>
         );
 
