@@ -108,34 +108,37 @@ var SearchController = function() {
         requestYelp(query, (err, resp, body) => {
             if (err) {
                 console.error('requestYelp failed with error: ' + err);
-                return cb(err);
+                cb(err);
+            }
+            else {
+
+                // Try this because JSON parse can fail
+                try {
+                    var barData = JSON.parse(body);
+                    console.log('barData at the server: ' + body);
+                    var venues = barData.businesses;
+                    var venueData = toVenueModelData(venues);
+                    var query = {$or: getAppIDList(venueData)};
+
+                    console.log('BEFORE Venue.find in search()');
+                    Venue.find(query, (err, data) => {
+                        console.log('Venue.find search completed');
+                        if (err) {
+                            console.log('Venue.find() error: ' + err);
+                            cb(err);
+                        }
+                        else {
+                            updateGoingVars(data, venueData);
+                            cb(null, venueData);
+                        }
+                    });
+                }
+                catch (e) {
+                    console.log('An exception was caught in search(): ' + e);
+                    cb(e);
+                }
             }
 
-            // Try this because JSON parse can fail
-            try {
-                var barData = JSON.parse(body);
-                console.log('barData at the server: ' + body);
-                var venues = barData.businesses;
-                var venueData = toVenueModelData(venues);
-                var query = {$or: getAppIDList(venueData)};
-
-                console.log('BEFORE Venue.find in search()');
-                Venue.find(query, (err, data) => {
-                    console.log('Venue.find search completed');
-                    if (err) {
-                        console.log('Venue.find() error: ' + err);
-                        return cb(err);
-                    }
-                    updateGoingVars(data, venueData);
-                    return cb(null, venueData);
-                });
-            }
-            catch (e) {
-                console.log('An exception was caught in search(): ' + e);
-                return cb(e);
-            }
-
-            //return cb(null, null);
         });
 
     };

@@ -18,38 +18,36 @@ module.exports = function(path) {
         var password = req.body.password;
         if (username && password) {
             User.findOne({username: username}, function(err, user) {
-                if (err) {return errorHandler(err, res);}
-
+                if (err) {errorHandler(err, res);}
                 // If the user doesn't exist, create new one and store into DB
-                if (!user) {
+                else if (!user) {
 					var newUser = new User();
                     newUser.username = username;
                     newUser.local.username = username;
-
                     newUser.local.password = hash.getHash(password);
 
                     newUser.save(function(err) {
-                        if (err) {return errorHandler(err, res);}
-                        console.log('Register local user ' + username +
-                            ' with pw ' + password);
+                        if (err) {errorHandler(err, res);}
+                        else {
+                            console.log('Register local user ' + username +
+                                ' with pw ' + password);
 
-                        res.url = '/auth/userLogin';
-                        return res.render(path + '/pug/signup_done.pug',
-                            {ok: true, name: username});
+                            res.url = '/auth/userLogin';
+                            res.render(path + '/pug/signup_done.pug',
+                                {ok: true, name: username});
+                        }
                     });
 
                 }
                 else {
-                    return res.render(path + '/pug/signup_done.pug',
+                    res.render(path + '/pug/signup_done.pug',
                         {ok: false, name: username});
                 }
-                return res.sendStatus(400);
             });
         }
         else {
-            return res.sendStatus(400);
+            res.sendStatus(400);
         }
-        return res.sendStatus(400);
     };
 
     var sendAuthenticatedUserInfo = function(res, username) {
