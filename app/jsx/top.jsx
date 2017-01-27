@@ -231,6 +231,8 @@ class NightlifeTop extends React.Component {
 
         var loading = this.state.loading;
         var venueList = null;
+
+        // Select whether to render a list or spinner while loading
         if (!loading) {
             venueList = (<VenueList
                     data={data}

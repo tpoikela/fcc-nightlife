@@ -13,19 +13,12 @@ class VenueListItem extends React.Component {
     constructor(props) {
         super(props);
         this.onGoingClick = this.onGoingClick.bind(this);
-        this.addToFavourites = this.addToFavourites.bind(this);
     }
 
     onGoingClick() {
         var newGoingState = !this.props.going;
         var obj = {going: newGoingState, appID: this.props.data.appID};
         this.props.onGoingClick(obj);
-    }
-
-    addToFavourites() {
-        // TODO call top component handles for ajax-post
-        var obj = {appID: this.props.data.appID};
-        return obj;
     }
 
     render() {
@@ -46,11 +39,10 @@ class VenueListItem extends React.Component {
         if (isAuth) {
             buttons = (
                 <span className='venue-list-item-btn'>
-                    <button onClick={this.onGoingClick}>
+                    <button className='btn-night'
+                        onClick={this.onGoingClick}
+                        >
                         {goingButtonText}
-                    </button>
-                    <button onClick={this.addToFavourites}>
-                        Add to favourites
                     </button>
                 </span>
             );

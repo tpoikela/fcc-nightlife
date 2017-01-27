@@ -46,7 +46,7 @@ class VenueList extends React.Component {
 
 VenueList.propTypes = {
     className: React.PropTypes.string,
-    data: React.PropTypes.objec,
+    data: React.PropTypes.array,
     isAuth: React.PropTypes.bool,
     onGoingClick: React.PropTypes.func,
     userID: React.PropTypes.string
