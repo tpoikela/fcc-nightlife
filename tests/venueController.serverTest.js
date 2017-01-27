@@ -4,22 +4,13 @@ var VenueController = require('../app/controllers/venueController.server.js');
 
 const chai = require('chai');
 const sinon = require('sinon');
+
 const expect = chai.expect;
 
 var Venue = require('../app/models/venues.js');
 var User = require('../app/models/users.js');
 
 var mongoose = require('mongoose');
-
-function createVenue() {
-    return {
-        _id: mongoose.Types.ObjectId(),
-        name: "TestVenue",
-        appID: 1234556,
-        location: {city: "xxx"},
-        going: [],
-    };
-}
 
 describe('VenueController', function() {
 
@@ -46,10 +37,10 @@ describe('VenueController', function() {
     });
 
     it('should add one going user to the venue', function(done) {
-        var username = "TestUser";
+        var username = 'TestUser';
         var obj = {
             appID: 1234556,
-            username: username,
+            username: username
         };
         var userID = mongoose.Types.ObjectId();
         var venue = new Venue();
@@ -68,10 +59,10 @@ describe('VenueController', function() {
     });
 
     it('should remove a user from the venue', function(done) {
-        var username = "TestUser";
+        var username = 'TestUser';
         var obj = {
             appID: 1234556,
-            username: username,
+            username: username
         };
         var userID = mongoose.Types.ObjectId();
         var venue = new Venue();
@@ -88,7 +79,6 @@ describe('VenueController', function() {
             done();
         });
     });
-
 
 
 });
