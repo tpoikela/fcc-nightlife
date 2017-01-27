@@ -66,10 +66,35 @@ input {
 
 .img-venue-thumbnail {
     display: inline-block;
+    border-radius: 5px;
+}
+
+.venue-list-div {
+
+    ul {
+        padding-left: 0px;
+    }
+
 }
 
 .venue-list-item-btn {
     display: inline-block;
+}
+
+.venue-list-item {
+    border: 1px solid $text-color;
+    list-style-type: none;
+    margin-left: 0px;
+    padding: 5px;
+}
+
+.venue-li-url {
+    display: inline-block;
+    margin-left: 5px;
+
+    button {
+        margin-left: 5px;
+    }
 }
 
 .top-menu {
@@ -114,3 +139,21 @@ ul.footer-links {
     color: $link-color;
 }
 
+.prof-list-item {
+    overflow: hidden;
+    padding-right: 50px;
+    button {
+        float: right;
+    }
+}
+
+/*
+.profile-venue-list {
+    width: 400px;
+
+    button {
+        float: right;
+    }
+
+}
+*/
