@@ -4,14 +4,15 @@ include mixins.pug
 
 doctype html
 html
-  +pageHead("Nightlife about")
+  +pageHead("About")
 
   body
     +layoutBase()
       +appTitle()
       +topMenu("about")
 
-    +layoutBase()
+      h2 About
+
       p
         | Nightlife coordination app for 
         a(href="http://www.freecodecamp.com") FreeCodeCamp 
@@ -28,5 +29,4 @@ html
         | Nice tutorial how to use the API can be found from 
         a(href="https://arian.io/how-to-use-yelps-api-with-node") How to use Yelp's API with Node
 
-    +layoutBase()
       +appFooter()

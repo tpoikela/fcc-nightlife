@@ -3,11 +3,12 @@
 
 - var bs = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css";
 - var domain = "http://127.0.0.1";
+- var appTitle = 'CoordiNite';
 
 mixin metaProps()
   meta(property="og:url" content="" + domain)
   meta(property="og:type" content="website")
-  meta(property="og:title" content="CoordiNight")
+  meta(property="og:title" content={appTitle})
   meta(property="og:description" content="You can create polls, and vote in other polls!")
   //- meta(property="og:image" content="http://www.your-domain.com/path/image.jpg" )
 
@@ -23,9 +24,10 @@ mixin scripts()
 //- Generates the page head (css + js) with a customisable title
 mixin pageHead(pageTitle)
   head
+    - var fullTitle = appTitle + ' ' + pageTitle;
     meta(http-equiv="content-type" content="text/html; charset=utf-8")
     +metaProps()
-    title= pageTitle
+    title= fullTitle
     +styleSheets()
     +scripts()
 
@@ -61,7 +63,7 @@ mixin topMenu(title)
     hr
 
 mixin appTitle()
-  h1.app-title-text CoordiNight
+  h1.app-title-text CoordiNite
 
 mixin button(text)
   button.btn-night {text}

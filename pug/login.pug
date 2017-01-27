@@ -6,12 +6,14 @@ include mixins.pug
 
 doctype html
 html
-  +pageHead("Nightlife login")
+  +pageHead("Login")
 
   body
     +layoutBase()
       +appTitle()
       +topMenu("login")
+
+      h2 Login
 
       - if (!failed) {
         p#pw-login-msg Please enter username and password:
