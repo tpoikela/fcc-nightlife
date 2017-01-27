@@ -59,6 +59,7 @@ fcc-nightlife=~/git/fcc-nightlife CD=~/git/fcc-nightlife filter="*.*" {
    profile.jsx
    searchinput.jsx
    top.jsx
+   venue-list-item.jsx
    venuelist.jsx
   }
  }
