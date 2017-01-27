@@ -57,7 +57,7 @@ class VenueListItem extends React.Component {
         return (
             <li className='venue-list-item'>
                 <img className='img-venue-thumbnail' src={image}/>
-                <div style={{display: 'inline-block'}}>
+                <div className='venue-li-url'>
                     <a href={url}>{data.name}</a>
                     {buttons}
                 </div>
