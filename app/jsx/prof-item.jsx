@@ -22,7 +22,10 @@ class ProfileVenueItem extends React.Component {
         return (
             <li>
                 {link}
-                <button onClick={this.onRemoveClick}>Remove</button>
+                <button className='btn-night'
+                    onClick={this.onRemoveClick}
+                    >Remove
+                </button>
             </li>
         );
     }
