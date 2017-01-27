@@ -18,6 +18,12 @@ $error-color: Red;
 $base-font-size: 14px;
 $big-font-size: 18px;
 
+@mixin linearGradient($dir, $c1, $c2) {
+    background: -webkit-linear-gradient($dir, $c1, $c2);
+    background: -moz-linear-gradient($dir, $c1, $c2);
+    background: linear-gradient($dir, $c1, $c2);
+}
+
 body {
     background: url('/public/img/bg-noise.png');
     background-color: $bg-color;
@@ -36,6 +42,7 @@ h1.app-title-text {
 }
 
 input {
+    background-color: $text-color;
     color: $dark-text;
 }
 
@@ -72,7 +79,8 @@ input {
     li {
         display: inline-block;
 
-        background-color: $text-color;
+        @include linearGradient(bottom, darken($text-color, 15%), $text-color);
+        //background-color: $text-color;
         border: solid 1px $link-color;
         border-radius: 7px;
         padding: 5px 10px;
@@ -102,18 +110,7 @@ ul.footer-links {
     }
 }
 
-/*
-i.fa {
-    color: $text-color;
-}
-*/
-
 .search-icon {
     color: $link-color;
 }
 
-#q-button {
-    top: 5px;
-    position: relative;
-
-}
