@@ -20,7 +20,7 @@ class ProfileVenueItem extends React.Component {
         var link = <a href={venue.url}>{venue.name}</a>;
 
         return (
-            <li>
+            <li className='prof-list-item'>
                 {link}
                 <button className='btn-night'
                     onClick={this.onRemoveClick}
