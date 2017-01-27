@@ -1,6 +1,6 @@
 
-const mocks = require("node-mocks-http");
-const sinon  = require("sinon");
+const mocks = require('node-mocks-http');
+const sinon = require('sinon');
 
 /** Contains some helper method for unit testing that requires req/res
  * objects.*/
@@ -14,9 +14,9 @@ module.exports = {
 
     getMockedRes: function() {
         var res = mocks.createResponse();
-        sinon.stub(res, "json");
-        sinon.stub(res, "render");
-        sinon.stub(res, "redirect");
+        sinon.stub(res, 'json');
+        sinon.stub(res, 'render');
+        sinon.stub(res, 'redirect');
         return res;
 
     },
@@ -29,7 +29,7 @@ module.exports = {
 
 
     createUser: function() {
-        return {_id: 1234, username: "TestUser", polls: []};
-    },
+        return {_id: 1234, username: 'TestUser', polls: []};
+    }
 
 };
