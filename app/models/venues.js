@@ -18,26 +18,27 @@ var VenueSchema = new Schema({
     },
 
     name: {
-        // required: true,
+        required: true,
         type: String
     },
 
     location: {
         type: Object,
-        // required: true,
         city: {
             type: String
         }
     },
 
-    descr: {},
+    descr: {
+        type: String
+    },
 
     url: {
-        // TODO
+        type: String
     },
 
     img: {
-        // TODO
+        type: String
     },
 
     going: [{type: ObjectId, ref: 'User'}]
@@ -65,7 +66,6 @@ VenueSchema.methods.addGoing = function(userID, cb) {
 VenueSchema.methods.removeGoing = function(userID, cb) {
     var index = this.going.indexOf(userID);
     if (index >= 0) {
-        console.log(JSON.stringify(this.going));
         this.going.splice(index, 1);
         console.log(JSON.stringify(this.going));
         var setVals = {$set: {going: this.going}};
