@@ -23,9 +23,11 @@
   "scripts": {
     "start": "node server.js",
     "test": "mocha tests/*Test.js",
+    "test-func": "mocha tests/testFunc*.js",
     "build": "gulp build",
     "lint-jsx": "node_modules/eslint/bin/eslint.js app/jsx/*",
     "lint-js": "node_modules/eslint/bin/eslint.js app/**/*.js",
+    "lint-test": "node_modules/eslint/bin/eslint.js tests/*Test.js",
     "lint": "npm run lint-jsx && npm run lint-js"
   },
   "author": "Tuomas Poikela",
