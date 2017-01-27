@@ -4,7 +4,10 @@ $blue:  #000066;
 $white: #FFFFCC;
 $lblue: #CCCCFF;
 $pink:  #990066;
-$color-theme1: $blue, $white, $lblue, $pink;
+
+$black: #222;
+
+$color-theme1: $blue, $white, $lblue, $black;
 
 $theme: $color-theme1; // Assign the desired 4-color them here
 $link-color: nth($theme, 1);
@@ -67,6 +70,7 @@ input {
 .img-venue-thumbnail {
     display: inline-block;
     border-radius: 5px;
+    margin-bottom: 5px;
 }
 
 .venue-list-div {
