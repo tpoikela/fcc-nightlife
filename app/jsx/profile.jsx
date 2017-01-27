@@ -100,7 +100,7 @@ class ProfileTop extends React.Component {
             if (venues.length > 0) {
                 venueText = (<div>
                     <p>You're currently going to the following places:</p>
-                    <ul>
+                    <ul className='profile-venue-list'>
                         {venueHtml}
                     </ul>
                 </div>);
