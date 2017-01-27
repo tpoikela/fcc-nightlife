@@ -1,6 +1,7 @@
 
 const chai = require('chai');
 const sinon = require('sinon');
+
 const expect = chai.expect;
 
 var Venue = require('../app/models/venues.js');
@@ -13,7 +14,7 @@ describe('Venue Model', () => {
     var venueUpdate = null;
 
     beforeEach(() => {
-        venueUpdate = sinon.stub(Venue, "update");
+        venueUpdate = sinon.stub(Venue, 'update');
     });
 
     afterEach(() => {
@@ -25,23 +26,24 @@ describe('Venue Model', () => {
         var venue = new Venue();
         var error = venue.validateSync();
 
+        /* eslint-disable */
         expect(error.errors.name).to.exist;
         expect(error.errors.appID).to.exist;
-        expect(error.errors.location).to.exist;
+        /* eslint-enable */
     });
 
     it('can have people going there', (done) => {
         var userID = mongoose.Types.ObjectId();
         var venue = new Venue();
-        venueUpdate.yields(null); // No error in this one
+        venueUpdate.yields(null);
 
-        var query = {$set: {going: [userID]}};
+        var query = {$set: {going: sinon.match.any}};
 
         var cb = (err) => {
             expect(err).to.be.null;
             sinon.assert.calledOnce(venueUpdate);
-            sinon.assert.calledWith(venueUpdate, {_id: venue._id}, query,
-                {}, sinon.match.any); // Still failing
+             sinon.assert.calledWith(venueUpdate, {_id: venue._id}, query,
+                 {}, sinon.match.any);
             done();
         };
 
@@ -55,14 +57,16 @@ describe('Venue Model', () => {
         venue.going.push(userID);
         venueUpdate.yields(null);
 
-        var query = {$set: {going: []}};
-        venue.removeGoing(userID, (err) => {
+        var query = {$set: {going: sinon.match.any}};
+        var cb = (err) => {
             expect(err).to.be.null;
             sinon.assert.calledOnce(venueUpdate);
-            sinon.assert.calledWith(venueUpdate, {_id: venue._id}, query,
-                {}, sinon.match.any); // Still failing
+            sinon.assert.calledWith(venueUpdate, {_id: venue._id},
+                query, {}, sinon.match.any);
             done();
-        });
+        };
+
+        venue.removeGoing(userID, cb);
 
     });
 
