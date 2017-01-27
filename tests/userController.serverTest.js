@@ -1,24 +1,14 @@
 
-const expect = require("chai").expect;
 
-const sinon  = require("sinon");
-require("sinon-mongoose");
+const sinon = require('sinon');
+require('sinon-mongoose');
 
-const mocks = require("node-mocks-http");
+const Fact = require('./factory');
+var User = require('../app/models/users');
+var UserController = require('../app/controllers/userController.server');
 
-const ObjectId = require('mongoose').Schema.Types.ObjectId;
 
-const Fact = require("./factory");
-
-var User = require("../app/models/users");
-
-var UserController = require("../app/controllers/userController.server");
-
-var createUser = function() {
-    return {_id: 1234, username: "TestUser", polls: []};
-};
-
-describe('How userController on server-side works', function() {
+describe('userController.server', function() {
 
     var req = null;
     var res = null;
@@ -33,8 +23,8 @@ describe('How userController on server-side works', function() {
         res = Fact.getMockedRes();
         ctrl = new UserController(process.cwd());
 
-        findOne = sinon.stub(User, "findOne");
-        save = sinon.stub(User.prototype, "save");
+        findOne = sinon.stub(User, 'findOne');
+        save = sinon.stub(User.prototype, 'save');
     });
 
     afterEach(function() {
@@ -45,7 +35,7 @@ describe('How userController on server-side works', function() {
 
     it('should add a local user into the database', sinon.test(function(done) {
         var user = Fact.createUser();
-        req.body = {username: user.username, password: "xxx"};
+        req.body = {username: user.username, password: 'xxx'};
 
         findOne.yields(null, null);
         save.yields(null);
@@ -54,12 +44,12 @@ describe('How userController on server-side works', function() {
             function() {
                 sinon.assert.calledOnce(res.render);
                 sinon.assert.calledWith(res.render,
-                    process.cwd() + "/pug/signup_done.pug",
+                    process.cwd() + '/pug/signup_done.pug',
                     {ok: true, name: user.username});
                 done();
             },
             function() {
-                throw new Error();
+                console.error('An error happened in the test');
                 done();
             }
         );
@@ -67,7 +57,7 @@ describe('How userController on server-side works', function() {
 
     it('should not overwrite existing user', function(done) {
         var user = Fact.createUser();
-        req.body = {username: user.username, password: "xxx"};
+        req.body = {username: user.username, password: 'xxx'};
 
         findOne.yields(null, {username: user.username});
 
@@ -75,12 +65,12 @@ describe('How userController on server-side works', function() {
             function() {
                 sinon.assert.calledOnce(res.render);
                 sinon.assert.calledWith(res.render,
-                    process.cwd() + "/pug/signup_done.pug",
+                    process.cwd() + '/pug/signup_done.pug',
                     {ok: false, name: user.username});
                 done();
             },
             function() {
-                throw new Error();
+                console.error('An error happened in the test');
                 done();
             }
         );
@@ -93,9 +83,9 @@ describe('How userController on server-side works', function() {
 
         findOne.restore();
 
-        sinon.mock(User).expects("findOne")
-            .chain("populate").withArgs("venues favourites")
-            .chain("exec").yields(null, user);
+        sinon.mock(User).expects('findOne')
+            .chain('populate').withArgs('venues favourites')
+            .chain('exec').yields(null, user);
 
         Promise.all([ctrl.getUser(req, res)]).then(function() {
             sinon.assert.calledOnce(res.json);
@@ -110,12 +100,13 @@ describe('How userController on server-side works', function() {
         req.user = user;
         findOne.restore();
 
-        sinon.mock(User).expects("findOne")
-            .chain("populate").withArgs("venues favourites")
-            .chain("exec").yields(null, null);
+        sinon.mock(User).expects('findOne')
+            .chain('populate').withArgs('venues favourites')
+            .chain('exec').yields(null, null);
 
         Promise.all([ctrl.getUser(req, res)]).then(function() {
-            var msg = {error: "No user " + user.username + " found in database."};
+            var msg = {error: 'No user ' + user.username +
+                ' found in database.'};
             sinon.assert.calledOnce(res.json);
             sinon.assert.calledWith(res.json, msg);
             done();
