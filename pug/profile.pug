@@ -7,16 +7,10 @@ html
   +pageHead("Nightlife profile")
 
   body
-    +topMenu("profile")
-    +appTitle()
-
-    div.container
-      div.row
-        div.col-xs-2
-        div.col-xs-8
-          div#profile-app
-        div.col-xs-2
-
-    +appFooter()
+    +layoutBase()
+      +appTitle()
+      +topMenu("profile")
+      div#profile-app
+      +appFooter()
 
     script(type="text/javascript" src="/build/bundle.js" charset="utf-8")
