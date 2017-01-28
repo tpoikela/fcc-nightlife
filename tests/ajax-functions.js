@@ -2,16 +2,18 @@
 /** No requires. Run this on browser with tests/ajax.html.*/
 
 var expect = chai.expect;
+var ajaxFunctions = ajaxFuncs;
 
+$DEBUG = 0;
 
 describe('Ajax function GET failing', function() {
 
 	var xhr, requests;
 
-	beforeEach(function () {
+	beforeEach(function() {
 		xhr = sinon.useFakeXMLHttpRequest();
 		requests = [];
-		xhr.onCreate = function (req) { requests.push(req); };
+		xhr.onCreate = function(req) { requests.push(req); };
 	});
 
 	afterEach(function () {
@@ -22,15 +24,15 @@ describe('Ajax function GET failing', function() {
 
 	// Test GET
     it('makes getRequests to query for user info', function(done) {
-        var userData = {"username": "testUser", "password": "qwerty", "obj": {}};
+        var userData = {username: 'testUser', password: 'qwerty', obj: {}};
         var dataJSON = JSON.stringify(userData);
 
-		ajaxFunctions.ajaxRequest("GET", "/testUrl", function(err, res) {
-            console.log("RES" + res);
+		ajaxFunctions.get('/testUrl', function(err, res) {
+            console.log('RES' + res);
             var respData = JSON.parse(res);
+            done();
             expect(err).to.equal(null);
             expect(respData).deep.equal(userData);
-            done();
 		});
 
         requests[0].respond(200, {'Content-Type': 'text/json'}, dataJSON);
@@ -40,10 +42,10 @@ describe('Ajax function GET failing', function() {
     // Test GET receiving 500 (internal server error)
     it('should behave when Get receives 500', function(done) {
 
-		ajaxFunctions.ajaxRequest("GET", "/testUrl", function(err, res) {
+		ajaxFunctions.get('/testUrl', function(err, res) {
+            done();
             expect(err !== null).to.equal(true);
             expect(err).to.equal(500);
-            done();
 		});
 
         requests[0].respond(500);
@@ -52,16 +54,45 @@ describe('Ajax function GET failing', function() {
 	//	Test POST
     it('Sends updated poll info via post requests', function(done) {
 
-        var pollData = {"opt": 1, "name": "xxx"};
+        var pollData = {opt: 1, name: 'xxx'};
 
-		ajaxFunctions.ajaxRequest("POST", "/testUrl", function(err) {
-            expect(err).to.equal(null);
+		ajaxFunctions.post('/testUrl', pollData, function(err) {
             done();
-		}, pollData);
+            expect(err).to.equal(null);
+		});
+
+        expect(requests[0].requestBody).to.equal(JSON.stringify(pollData));
+        requests[0].respond(200);
+
+    });
+
+    it('Can use also JSON strings for post', function(done) {
+
+        var pollData = JSON.stringify({opt: 1, name: 'xxx',
+            nestedObj: {name: 'nestedObj', dur: 999}
+        });
+
+		ajaxFunctions.post('/testUrl', pollData, function(err) {
+            done();
+            expect(err).to.equal(null);
+		});
 
         expect(requests[0].requestBody).to.equal(pollData);
         requests[0].respond(200);
 
+    });
+
+    it('Fails gracefully when post receives error code', function(done) {
+        var pollData = JSON.stringify({opt: 1, name: 'xxx',
+            nestedObj: {name: 'nestedObj', dur: 999}
+        });
+
+		ajaxFunctions.post('/testUrl', pollData, function(err) {
+            done();
+            expect(err).to.equal(500);
+		});
+
+        requests[0].respond(500);
     });
 
 });

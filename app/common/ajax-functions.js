@@ -12,6 +12,9 @@ var ajaxFuncs = {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 cb(null, xhr.responseText);
             }
+            else if (xhr.readyState === 4 && xhr.status === 500) {
+                cb(500, null);
+            }
         };
 
         xhr.open('get', url, true);
@@ -25,8 +28,11 @@ var ajaxFuncs = {
 
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log('Resp text:' + xhr.responseText);
+                if ($DEBUG) {console.log('Resp text:' + xhr.responseText);}
                 cb(null, xhr.responseText);
+            }
+            else if (xhr.readyState === 4 && xhr.status === 500) {
+                cb(500, xhr.responseText);
             }
         };
         xhr.open('post', url, true);
