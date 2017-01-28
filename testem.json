@@ -1,0 +1,7 @@
+{
+    "framework": "mocha",
+    "src_files": [
+        "build/bundleTests.js"
+    ],
+    "launch_in_dev": ["phantomjs"]
+}
