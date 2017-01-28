@@ -1,10 +1,11 @@
 
 /** No requires. Run this on browser with tests/ajax.html.*/
 
-var expect = chai.expect;
-var ajaxFunctions = ajaxFuncs;
+const chai = require('chai');
+const sinon = require('sinon');
+var ajaxFunctions = require('../app/common/ajax-functions.js');
 
-$DEBUG = 0;
+var expect = chai.expect;
 
 describe('Ajax function GET failing', function() {
 
@@ -16,7 +17,7 @@ describe('Ajax function GET failing', function() {
 		xhr.onCreate = function(req) { requests.push(req); };
 	});
 
-	afterEach(function () {
+	afterEach(function() {
 		// Like before we must clean up when tampering with globals.
 		xhr.restore();
 	});
