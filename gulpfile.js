@@ -6,9 +6,25 @@ var babelify = require('babelify');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 
-var spawnSync = require('child_process').spawnSync;
+var nodemon = require('gulp-nodemon');
+
+var spawn = require('child_process').spawn;
 
 var jsxDir = './app/jsx';
+
+var port = process.env.PORT || 7070;
+
+// Define paths for all source files here
+var paths = {
+    client: ['./app/jsx/*.jsx', './app/common/ajax-functions.js'],
+    sass: ['./scss/*.*'],
+
+    server: './server.js',
+    serverIgnore: ['./app/jsx', './app/common/ajax-functions.js'],
+
+    tags: ['./app/**/*', './pug/**/*', './scss/**/*'],
+
+};
 
 gulp.task('build', function() {
     return browserify({entries: jsxDir + '/app.jsx',
@@ -37,15 +53,51 @@ gulp.task('sass', function() {
 
 });
 
-gulp.task('watch', ['build'], function() {
-    // gulp.watch(jsxDir + '/*.jsx', ['build']);
-    gulp.watch('./app/**/*.*', ['build', 'tags']);
-    gulp.watch('./scss/*.*', ['sass']);
+gulp.task('serve', function(cb) {
+    var called = false;
+    nodemon({
+        script: paths.server,
+        ext: '.js',
+        ignore: paths.serverIgnore,
+        //exec: 'node',
+        env: {
+            NODE_ENV: process.env.NODE_ENV || 'development',
+            DEBUG: process.env.DEBUG || 0,
+            PORT: port
+        }
+    })
+    .on('start', function() {
+        if (!called) {
+            console.log('Server started on port ' + port);
+            called = true;
+            cb();
+        }
+    })
+    .on('restart', function(files) {
+        if (files) {
+            console.log('Nodemon will restart due to changes in: ', files);
+        }
+    });
 });
 
+// Bit unusual task. Builds ctags-file for easier src navigation in Vim
 gulp.task('tags', function() {
     console.log('Building ctags for the project.');
-    spawnSync('ctags', ['-R', 'app/', 'pug/', 'scss/']);
+    spawn('ctags', ['-R', 'app/', 'pug/', 'scss/']);
+});
+
+var watchDependents = [
+  'build',
+  'tags',
+  'sass',
+  'serve'
+];
+
+gulp.task('watch', watchDependents, function() {
+    gulp.watch(paths.client, ['build']);
+    gulp.watch(paths.server, ['serve']);
+    gulp.watch(paths.sass, ['sass']);
+    gulp.watch(paths.tags, ['tags']);
 });
 
 gulp.task('default', ['watch']);
