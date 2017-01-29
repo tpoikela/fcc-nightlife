@@ -21,6 +21,7 @@ var webdriver = require('selenium-webdriver');
 
 const By = webdriver.By;
 const until = webdriver.until;
+const byClass = By.className;
 
 var browser = new webdriver.Builder()
     // .forBrowser('chrome')
@@ -76,7 +77,8 @@ var signupNewUser = function(user, pw) {
             setCredentials(user, pw).then( () => {
                 // Submits the name/pw tot the server
                 browser.findElement(By.css('button')).click().then( () => {
-                    browser.wait(until.titleIs('Signup OK'), 1000).then( () => {
+                    browser.wait(until.titleIs('CoordiNite Signup OK'), 1000)
+                    .then( () => {
                         console.log('Signup OK now');
 
                         browser.findElement(By.css('[href^="/login"]')).click()
@@ -118,7 +120,8 @@ var loginRegisteredUser = function(userPw) {
                         reject();
                     }
 
-                    browser.wait(until.titleMatches(/home/), 1000).then( () => {
+                    browser.wait(until.titleMatches(/CoordiNite Home/), 1000)
+                    .then( () => {
 
                         browser.findElement(By.css('[href^="/profile"]'))
                             .then( (elem) => {
@@ -126,7 +129,7 @@ var loginRegisteredUser = function(userPw) {
                                 resolve({user: user, pw: pw});
                             }
                             else {
-                                reject();
+                                reject('No profile elem found by CSS.');
                             }
                         });
                     });
@@ -148,17 +151,26 @@ var doVenueSearch = function() {
 
             browser.findElement(By.css('button')).click().then( () => {
                 console.log('Clicked the search button.');
-                browser.wait(until.elementLocated(By.className(venueItem)), 1000)
+                browser.wait(until.elementLocated(byClass(venueItem)), 1000)
                 .then( () => {
-                    browser.findElements(By.className(venueItem))
+                    browser.findElements(byClass(venueItem))
                     .then( (values) => {
                         assert.ok(values.length > 0,
                             'Got more than 1 search results OK.');
                         resolve();
+                    })
+                    .catch( (reason) => {
+                        reject(reason);
                     });
+                })
+                .catch( (reason) => {
+                    reject(reason);
                 });
             });
 
+        })
+        .catch( (reason) => {
+            reject(reason);
         });
 
     });

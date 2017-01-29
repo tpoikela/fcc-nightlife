@@ -6,6 +6,7 @@
  * 5. Verify results.
  */
 
+var expect = require('chai').expect;
 
 var test = require('selenium-webdriver/testing');
 var webdriver = require('selenium-webdriver');
@@ -86,9 +87,11 @@ var pressSearchButton = function(arr) {
 
 var waitForSearchResults = function() {
     var promise = new Promise( (resolve, reject) => {
-        browser.wait(until.elementLocated(By.className('venue-list-item')), 1000)
+        browser.wait(until.elementLocated(By.className('venue-list-item')),
+            1000)
             .then( () => {
-                browser.findElement(By.css('.venue-list-item')).then( (elems) => {
+                browser.findElement(By.css('.venue-list-item')).then(
+                    (elems) => {
                     if (elems) {
                         resolve(elems);
                     }
@@ -108,7 +111,10 @@ var verifySearchResults = function(elems) {
     var promise = new Promise( (resolve, reject) => {
         var error = 0;
         if (error) {reject('xxx');}
-        else {resolve();}
+        else {
+            expect(elems.length > 0).to.be.true;
+            resolve();
+        }
     });
     return promise;
 };
