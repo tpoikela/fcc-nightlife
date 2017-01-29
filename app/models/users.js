@@ -24,8 +24,24 @@ var UserSchema = new Schema({
 
     // Used for local user and password auth
     local: {
-        username: String,
-        password: String
+        required: true,
+        type: Object,
+        username: {
+            required: true,
+            type: String
+        },
+        password: {
+            required: true,
+            type: String
+        },
+        validate: {
+            validator: function(v) {
+                return v.hasOwnProperty('username')
+                    && v.hasOwnProperty('password');
+            },
+            message: 'username and password must exist.'
+        }
+
     },
 
     favourites: [{type: ObjectId, ref: 'Venue'}],
@@ -64,8 +80,6 @@ UserSchema.methods.removeVenue = function(venueID, cb) {
         if (item.equals(venueID)) {return true;}
         return false;
     });
-
-    console.log('Index is now: ' + index);
 
     if (index >= 0) {
         venues.splice(index, 1);
