@@ -23,6 +23,7 @@ module.exports = function(path) {
                 else if (!user) {
 					var newUser = new User();
                     newUser.username = username;
+                    newUser.local = {};
                     newUser.local.username = username;
                     newUser.local.password = hash.getHash(password);
 
