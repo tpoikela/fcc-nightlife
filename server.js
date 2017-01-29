@@ -12,6 +12,9 @@ if (process.env.NODE_ENV !== "production") {
     if ($DEBUG) console.log("Loaded .env file OK. Node env: " 
         + process.env.NODE_ENV);
 }
+else {
+    console.log('Running now in production environment');
+}
 
 // Load required modules
 var express = require('express');
@@ -30,7 +33,7 @@ app.set("view engine", "pug");
 require('./app/config/passport')(passport);
 
 app.url = process.env.APP_URL;
-console.log("APP url: " + app.url);
+console.log('The full APP url: ' + app.url);
 
 mongoose.connect(process.env.MONGO_URI);
 mongoose.Promise = global.Promise;
