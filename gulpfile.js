@@ -20,7 +20,8 @@ var paths = {
     sass: ['./scss/*.*'],
 
     server: './server.js',
-    serverIgnore: ['./app/jsx', './app/common/ajax-functions.js'],
+    serverIgnore: ['./gulpfile.js', './scss', './pug', './public', './build',
+        './app/jsx', './app/common/ajax-functions.js'],
 
     tags: ['./app/**/*', './pug/**/*', './scss/**/*'],
 
@@ -53,6 +54,7 @@ gulp.task('sass', function() {
 
 });
 
+/* Task for starting/restarting server on any changes.*/
 gulp.task('serve', function(cb) {
     var called = false;
     nodemon({
