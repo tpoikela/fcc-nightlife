@@ -47,7 +47,7 @@ gulp.task('build-test', function() {
 });
 
 gulp.task('build-sass', function() {
-	return gulp.src('./sass/*.scss')
+	return gulp.src('./scss/*.scss')
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('./build'));
 
