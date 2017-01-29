@@ -24,7 +24,7 @@
     "ReactJS"
   ],
   "scripts": {
-    "build": "node_modues/gulp/bin/gulp.js build",
+    "build": "node_modules/gulp/bin/gulp.js build",
     "lint": "npm run lint-jsx && npm run lint-js",
     "lint-js": "node_modules/eslint/bin/eslint.js app/**/*.js",
     "lint-jsx": "node_modules/eslint/bin/eslint.js app/jsx/*",
