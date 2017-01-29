@@ -27,7 +27,7 @@ var paths = {
 
 };
 
-gulp.task('build', function() {
+gulp.task('build-js', function() {
     return browserify({entries: jsxDir + '/app.jsx',
         extensions: ['.jsx'], debug: true})
         .transform(babelify)
@@ -46,12 +46,17 @@ gulp.task('build-test', function() {
         .pipe(gulp.dest('build'));
 });
 
-gulp.task('sass', function() {
-    console.log('Watching folder ./scss for changes.');
+gulp.task('build-sass', function() {
 	return gulp.src('./sass/*.scss')
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('./build'));
 
+});
+
+var buildTasks = ['build-js', 'build-sass'];
+
+gulp.task('build', buildTasks, function() {
+    console.log('Building the application.');
 });
 
 /* Task for starting/restarting server on any changes.*/
@@ -89,16 +94,16 @@ gulp.task('tags', function() {
 });
 
 var watchDependents = [
-  'build',
+  'build-js',
   'tags',
-  'sass',
+  'build-sass',
   'serve'
 ];
 
 gulp.task('watch', watchDependents, function() {
-    gulp.watch(paths.client, ['build']);
+    gulp.watch(paths.client, ['build-js']);
     gulp.watch(paths.server, ['serve']);
-    gulp.watch(paths.sass, ['sass']);
+    gulp.watch(paths.sass, ['build-sass']);
     gulp.watch(paths.tags, ['tags']);
 });
 
