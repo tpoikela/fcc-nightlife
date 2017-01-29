@@ -43,7 +43,7 @@ describe('Ajax function GET failing', function() {
     // Test GET receiving 500 (internal server error)
     it('should behave when Get receives 500', function(done) {
 
-		ajaxFunctions.get('/testUrl', function(err, res) {
+		ajaxFunctions.get('/testUrl', function(err) {
             done();
             expect(err !== null).to.equal(true);
             expect(err).to.equal(500);

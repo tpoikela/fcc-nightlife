@@ -1,18 +1,16 @@
 
 const chai = require('chai');
 const sinon = require('sinon');
+const mongoose = require('mongoose');
+const Venue = require('../app/models/venues.js');
 
 const expect = chai.expect;
-
-var Venue = require('../app/models/venues.js');
-
-var mongoose = require('mongoose');
-
 
 describe('Venue Model', () => {
 
     var venueUpdate = null;
 
+    // Stub out the update which interacts with database
     beforeEach(() => {
         venueUpdate = sinon.stub(Venue, 'update');
     });
@@ -26,10 +24,8 @@ describe('Venue Model', () => {
         var venue = new Venue();
         var error = venue.validateSync();
 
-        /* eslint-disable */
         expect(error.errors.name).to.exist;
         expect(error.errors.appID).to.exist;
-        /* eslint-enable */
     });
 
     it('can have people going there', (done) => {
@@ -42,7 +38,7 @@ describe('Venue Model', () => {
         var cb = (err) => {
             expect(err).to.be.null;
             sinon.assert.calledOnce(venueUpdate);
-             sinon.assert.calledWith(venueUpdate, {_id: venue._id}, query,
+            sinon.assert.calledWith(venueUpdate, {_id: venue._id}, query,
                  {}, sinon.match.any);
             done();
         };
