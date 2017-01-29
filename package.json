@@ -21,15 +21,16 @@
     "ReactJS"
   ],
   "scripts": {
-    "start": "node server.js",
-    "test-func": "mocha tests/testFunc*.js",
-    "test-unit": "mocha tests/*Test.js",
-    "test": "npm run test-unit && npm run test-func",
     "build": "gulp build",
-    "lint-jsx": "node_modules/eslint/bin/eslint.js app/jsx/*",
+    "lint": "npm run lint-jsx && npm run lint-js",
     "lint-js": "node_modules/eslint/bin/eslint.js app/**/*.js",
-    "lint-test": "node_modules/eslint/bin/eslint.js tests/*Test.js",
-    "lint": "npm run lint-jsx && npm run lint-js"
+    "lint-jsx": "node_modules/eslint/bin/eslint.js app/jsx/*",
+    "lint-test": "node_modules/eslint/bin/eslint.js tests/*.js",
+    "postinstall": "npm run build",
+    "start": "node server.js",
+    "test": "npm run test-unit && npm run test-func",
+    "test-func": "mocha tests/testFunc*.js",
+    "test-unit": "mocha tests/*Test.js"
   },
   "author": "Tuomas Poikela",
   "license": "MIT",
