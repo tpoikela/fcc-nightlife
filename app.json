@@ -1,5 +1,5 @@
 {
-  "name": "FCC Nightlife Coordinattion App",
+  "name": "Nightlife Coordinattion App",
   "description": "Users can attend clubs/restaurants and see who's going",
   "repository": "https://github.com/tpoikela/fcc-nightlife",
   "keywords": ["node", "express", "mongodb", "react", "mern"]
