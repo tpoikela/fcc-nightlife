@@ -110,9 +110,9 @@ var waitForSearchResults = function() {
 var verifySearchResults = function(elems) {
     var promise = new Promise( (resolve, reject) => {
         var error = 0;
-        if (error) {reject('xxx');}
+        if (error) {reject('Zero search results found.');}
         else {
-            expect(elems.length > 0).to.be.true;
+            expect(elems).to.not.be.null;
             resolve();
         }
     });
