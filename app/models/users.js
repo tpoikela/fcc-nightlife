@@ -66,9 +66,15 @@ UserSchema.statics.getUserID = function(username, cb) {
 /* Adds one venue for the user.*/
 UserSchema.methods.addVenue = function(venueID, cb) {
     var venues = this.venues;
-    venues.push(venueID);
-    var obj = {venues: venues};
-    this.updateInfo(obj, cb);
+    var index = venues.indexOf(venueID);
+    if (index < 0) {
+        venues.push(venueID);
+        var obj = {venues: venues};
+        this.updateInfo(obj, cb);
+    }
+    else {
+        cb(new Error('venueID ' + venueID + ' already exists.'));
+    }
 };
 
 /* Removes one venue from the user.*/
