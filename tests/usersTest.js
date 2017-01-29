@@ -6,6 +6,15 @@ const User = require('../app/models/users.js');
 
 const expect = chai.expect;
 
+var createUser = (name, pw) => {
+    var user = new User();
+    user._id = mongoose.Types.ObjectId();
+    user.username = name;
+    user.local = {username: name, password: pw};
+    user.venues = [];
+    return user;
+};
+
 describe('User Model', () => {
 
     var userUpdate = null;
@@ -36,12 +45,10 @@ describe('User Model', () => {
         var user = new User();
         var error = user.validateSync();
         expect(typeof error.errors.local).to.exist;
-        console.log(JSON.stringify(error));
 
         var localInv = {password: 'xxx'};
         user.local = localInv;
         error = user.validateSync();
-        console.log(JSON.stringify(error));
         expect(typeof error.errors.local.password).to.equal('undefined');
         expect(typeof error.errors.local.username).to.exist;
 
@@ -52,21 +59,34 @@ describe('User Model', () => {
     });
 
     it('can have venues added to it', (done) => {
-        var user = new User();
-        user._id = mongoose.Types.ObjectId();
-        user.username = 'xxx';
-        user.local = {username: 'xxx', password: 'xxx'};
+        var user = createUser('xxx', 'xxx');
 
         var venueID = mongoose.Types.ObjectId();
         userUpdate.yields(null);
 
-        var setQuery = {$set: {venues: [venueID]}};
+        var setQuery = {$set: {venues: sinon.match.array}};
 
         var cb = (err) => {
             expect(err).to.be.null;
             sinon.assert.calledOnce(userUpdate);
-            sinon.assert.calledWith(userUpdate, {_id: venueID}, setQuery, {},
-                sinon.match.any);
+            sinon.assert.calledWith(userUpdate, {_id: user._id},
+                setQuery, {}, sinon.match.any);
+            done();
+        };
+
+        user.addVenue(venueID, cb);
+
+    });
+
+    it('cannot have multiple venues with same ID', (done) => {
+        var user = createUser('xxx', 'xxx');
+        var venueID = mongoose.Types.ObjectId();
+        user.venues.push(venueID);
+        userUpdate.yields(null);
+
+        var cb = (err) => {
+            expect(err).to.not.be.null;
+            sinon.assert.notCalled(userUpdate);
             done();
         };
 
