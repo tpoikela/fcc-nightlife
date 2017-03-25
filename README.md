@@ -3,7 +3,7 @@
 Nightlife coordination app for FreeCodeCamp. See the actual challenge
 [here](https://www.freecodecamp.com/challenges/build-a-nightlife-coordination-app).
 
-Once finished, the application will be deployed to Heroku.
+The page/application is deployed on Heroku: [CoordiNite](http://coordinite.herokuapp.com/).
 
 ## List of (technical) features:
 
@@ -13,6 +13,7 @@ Once finished, the application will be deployed to Heroku.
   - ReactJS as front-end engine
   - Local authentication using username/password (passport.js)
   - Unit testing using mocha/chai/sinon
+  - Functional tests using Selenium (JavaScript)
 
 ## Specifications/User stories
 
