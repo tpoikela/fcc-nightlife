@@ -30,7 +30,7 @@ class SearchInput extends React.Component {
         var className = this.props.className || 'search-input-div';
         return (
             <div className={className}>
-                <input className='fa fa-2x search-input'
+                <input className='fa fa-2x search-input form-control'
                     name='q'
                     onChange={this.onChange}
                     placeholder='Where are you?'
